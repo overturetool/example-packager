@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.overture.tools</groupId>
-    <artifactId>tools</artifactId>
-    <version>2.0.1-SNAPSHOT<!--Replaceable: Main Version--></version>
+    <groupId>org.overture.build</groupId>
+    <artifactId>root</artifactId>
+    <version>2.0.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -20,7 +20,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.2</version>
         <configuration>
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
@@ -31,13 +30,6 @@
               <goal>descriptor</goal>
             </goals>
           </execution>
-          <!-- if you want to generate help goal -->
-          <!-- <execution> -->
-          <!--   <id>help-goal</id> -->
-          <!--   <goals> -->
-          <!--     <goal>helpmojo</goal> -->
-          <!--   </goals> -->
-          <!-- </execution> -->
         </executions>
       </plugin>
     </plugins>
@@ -45,7 +37,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.overture.tools</groupId>
+      <groupId>org.overture.build</groupId>
       <artifactId>example-packager</artifactId>
       <version>${project.version}</version>
     </dependency>
