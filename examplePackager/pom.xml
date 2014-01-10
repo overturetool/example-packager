@@ -12,6 +12,11 @@
   <artifactId>example-packager</artifactId>
   <name>Overture Example Packager core</name>
 
+  <properties>
+    <!-- This is set to deploy maven artifacts into the correct staging directory. -->
+    <staging.repo.target>${project.basedir}/../target/mvn-staging-repo</staging.repo.target>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

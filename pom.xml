@@ -9,14 +9,25 @@
   <version>2.0.2</version>
   <name>Overture Example Packager superpom</name>
 
-  <modules>
-    <module>examplePackager</module>
-    <module>examplePackagerPlugin</module>
-  </modules>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <github.global.server>github</github.global.server>
+    <staging.repo.target>${project.build.directory}/mvn-staging-repo</staging.repo.target>
   </properties>
+
+  <!--
+      The setup to publish to an ad hoc mvn repo on GitHub is based on
+      the stackoverflow answer at
+      http://stackoverflow.com/a/14013645/753029
+  -->
+  <distributionManagement>
+    <repository>
+      <id>mvn-repo-staging</id>
+      <name>Temporary Staging Repository</name>
+      <!-- This value will change in submodules depending on the value of ${staging.repo.target}. -->
+      <url>file://${staging.repo.target}</url>
+    </repository>
+  </distributionManagement>
 
   <dependencies>
     <!-- Add JUnit for testing -->
@@ -179,6 +190,44 @@
       </extension>
     </extensions>
   </build>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>examplePackager</module>
+        <module>examplePackagerPlugin</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <!-- See the comment above about publishing to ad hoc mvn repos. -->
+      <id>dev-repo</id>
+      <build>
+        <defaultGoal>com.github.github:site-maven-plugin:site</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>com.github.github</groupId>
+            <artifactId>site-maven-plugin</artifactId>
+            <version>0.9</version>
+            <configuration>
+              <message>Maven artifacts for ${project.version}</message>
+              <outputDirectory>${project.build.directory}/mvn-staging-repo</outputDirectory>
+              <branch>refs/heads/mvn-dev-repo</branch>
+              <includes><include>**/*</include></includes>
+              <repositoryOwner>overturetool</repositoryOwner>
+              <repositoryName>example-packager</repositoryName>
+              <merge>true</merge>
+              <noJekyll>true</noJekyll>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <organization>
     <name>Overture</name>

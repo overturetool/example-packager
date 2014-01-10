@@ -11,9 +11,13 @@
 
   <packaging>maven-plugin</packaging>
 
-  <groupId>org.overture.tools.maven</groupId>
-  <artifactId>example-packager</artifactId>
+  <artifactId>example-packager-plugin</artifactId>
   <name>Overture Example Packager Maven plug-in</name>
+
+  <properties>
+    <!-- This is set to deploy maven artifacts into the correct staging directory. -->
+    <staging.repo.target>${project.basedir}/../target/mvn-staging-repo</staging.repo.target>
+  </properties>
 
   <build>
     <plugins>
