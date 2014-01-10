@@ -198,8 +198,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>examplePackager</module>
-        <module>examplePackagerPlugin</module>
+        <module>core</module>
+        <module>plugin</module>
       </modules>
     </profile>
 
