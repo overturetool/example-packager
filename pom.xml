@@ -2,32 +2,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- Needed to make deployment work -->
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <packaging>pom</packaging>
 
-  <groupId>org.overture.build</groupId>
+  <groupId>org.overturetool.build</groupId>
   <artifactId>root</artifactId>
   <version>2.0.2</version>
   <name>Overture Example Packager superpom</name>
+  <description>A maven plugin to bundle up the VDM examples in the Overture Project's main repository</description>
+  <url>http://overturetool.org/example-packager/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <github.global.server>github</github.global.server>
-    <staging.repo.target>${project.build.directory}/mvn-staging-repo</staging.repo.target>
   </properties>
-
-  <!--
-      The setup to publish to an ad hoc mvn repo on GitHub is based on
-      the stackoverflow answer at
-      http://stackoverflow.com/a/14013645/753029
-  -->
-  <distributionManagement>
-    <repository>
-      <id>mvn-repo-staging</id>
-      <name>Temporary Staging Repository</name>
-      <!-- This value will change in submodules depending on the value of ${staging.repo.target}. -->
-      <url>file://${staging.repo.target}</url>
-    </repository>
-  </distributionManagement>
 
   <dependencies>
     <!-- Add JUnit for testing -->
@@ -65,6 +58,15 @@
         <configuration>
           <!-- Version control obviates the need for this. -->
           <generateBackupPoms>false</generateBackupPoms>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.4.2</version>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
     </plugins>
@@ -202,32 +204,51 @@
         <module>plugin</module>
       </modules>
     </profile>
-
-    <profile>
-      <!-- See the comment above about publishing to ad hoc mvn repos. -->
-      <id>dev-repo</id>
-      <build>
-        <defaultGoal>com.github.github:site-maven-plugin:site</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>com.github.github</groupId>
-            <artifactId>site-maven-plugin</artifactId>
-            <version>0.9</version>
-            <configuration>
-              <message>Maven artifacts for ${project.version}</message>
-              <outputDirectory>${project.build.directory}/mvn-staging-repo</outputDirectory>
-              <branch>refs/heads/mvn-dev-repo</branch>
-              <includes><include>**/*</include></includes>
-              <repositoryOwner>overturetool</repositoryOwner>
-              <repositoryName>example-packager</repositoryName>
-              <merge>true</merge>
-              <noJekyll>true</noJekyll>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
+
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/overturetool/example-packager/issues</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>GNU General Public License (GPL)</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>git@github.com/overturetool/example-packager.git</url>
+    <connection>scm:git:https://github.com/overturetool/example-packager.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/overturetool/example-packager.git</developerConnection>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>kel</id>
+      <name>Kenneth Lausdahl</name>
+      <email>kel@eng.au.dk</email>
+      <organization>Aarhus University</organization>
+      <organizationUrl>http://eng.au.dk/</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>jwc</id>
+      <name>Joey Coleman</name>
+      <email>jwc@eng.au.dk</email>
+      <organization>Aarhus University</organization>
+      <organizationUrl>http://eng.au.dk/</organizationUrl>
+      <roles>
+        <role>coordinator</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <organization>
     <name>Overture</name>
