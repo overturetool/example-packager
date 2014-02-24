@@ -41,19 +41,19 @@ public class HtmlPage
 	public static String makeLink(String text, String href)
 	{
 		//return "<a href=\"" + href + "\">" + text + "</a>";e
-		return "[" + text + "]" + "(" + href + ") \n";
+		return "[" + text + "]" + "(" + href + ")";
 	}
 
 	public static String makeLink(String text, String href, String preHref)
 	{
 		//return "<a href=\"" + preHref + href + "\">" + text + "</a>";
-		return "[" + text + "]" + "(" + preHref + href + ") \n";
+		return "[" + text + "]" + "(" + preHref + href + ")";
 	}
  
-	public static String makeH1(String text)
-	{
-		return makeH(1, text);// return "\n<h1>" + text+ "</h1>\n";
-	}
+//	public static String makeH1(String text)
+//	{
+//		return makeH(1, text);// return "\n<h1>" + text+ "</h1>\n";
+//	}
 
 	public static String makeBr()
 	{

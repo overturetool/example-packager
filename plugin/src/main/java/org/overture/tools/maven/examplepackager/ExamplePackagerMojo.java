@@ -41,7 +41,7 @@ public class ExamplePackagerMojo extends AbstractMojo {
    * 
    */
   @Parameter(alias="markdown")
-  protected boolean outputMarkdownFiles = true;
+  protected boolean outputMarkdownFiles = false;
 	
     /**
      * A list of directories containing subdirectories with example

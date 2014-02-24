@@ -19,6 +19,7 @@
 package org.overture.tools.examplepackager;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -166,7 +167,7 @@ public class Controller
 			System.out.println("Creating web entry for: " + name);
 			
 			
-			
+			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeH(3, name));
 
 			System.out.print(" table...");
@@ -194,6 +195,7 @@ public class Controller
 			rows += HtmlTable.makeRow("Download:", HtmlPage.makeLink("model", outputFolderName
 					+ "/" + zipFile.getName())
 					+ " " + pdfLink);
+			
 
 			sb.append(HtmlTable.makeTable(rows));
 			System.out.print("\n");
@@ -239,15 +241,17 @@ public class Controller
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(HtmlPage.markdown_header("Web Overview Page"));
-		sb.append(HtmlPage.makeH1("Overture Examples"));
+		sb.append(HtmlPage.makeH(1,"Overture Examples"));
 
 		for (Controller controller : controllers)
 		{
 			sb.append(HtmlPage.makeH(2, controller.getName()));
+			
 			sb.append(HtmlPage.makeLink("--root--", controller.getName()));
 			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeLink("--web--", controller.getName()
 					+ "/index.md"));
+			sb.append(HtmlPage.makeBr());
 		}
 
 		sb.append(HtmlPage.makeBr());
@@ -256,6 +260,7 @@ public class Controller
 		sb.append(HtmlPage.makeH(2, "Download example collections"));
 		for (File file : zipFiles)
 		{
+			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeLink(file.getName(), file.getName()));
 			sb.append(HtmlPage.makeBr());
 		}
