@@ -7,3 +7,4 @@ jdk:
   - oraclejdk7
 before_install:
   - mvn -version
+  - env
