@@ -33,7 +33,7 @@ public class HtmlTable
 	public static String makeRow(String title, String data)//TODO: Change This
 	{
 		//return "\n\t<tr>" + data + "\n\t</tr>";
-		return "|*" + title + "*|" + data +"|\n";
+		return "|**" + title + "**|" + data +"|\n";
 	}
 
 //	public static String makeRowTotal(String data)
