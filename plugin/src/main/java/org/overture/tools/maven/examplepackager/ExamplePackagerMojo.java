@@ -35,7 +35,13 @@ public class ExamplePackagerMojo extends AbstractMojo {
    */
   @Parameter(alias="output-web")
   protected boolean outputWebFiles = false;
-    
+   
+  /**
+   * A boolean indicating whether example webpages will be create in Markdown language.
+   * 
+   */
+  @Parameter(alias="markdown")
+  protected boolean outputMarkdownFiles = true;
 	
     /**
      * A list of directories containing subdirectories with example
@@ -86,7 +92,7 @@ public class ExamplePackagerMojo extends AbstractMojo {
     protected File tmpdir;
 
 
-	private boolean overtureCSSWeb= true;
+	private boolean overtureCSSWeb= false;
 
 
     @Override

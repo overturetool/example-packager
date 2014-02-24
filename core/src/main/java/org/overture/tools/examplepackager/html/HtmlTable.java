@@ -26,12 +26,12 @@ public class HtmlTable
 	public static final String STYLE_CLASS_FAILD = "faild";
 	public static final String STYLE_CLASS_OK = "ok";
 
-	public static String makeTable(String data)
+	public static String makeTable(String data)//TODO:Remove this
 	{
-		return "\n<table class=\"mytable\">" + data + "\n</table>";
+		return "\n<table class=\"mytable\">" + data + "\n</table>\n";
 	}
 
-	public static String makeRow(String data)
+	public static String makeRow(String data)//TODO: Change This
 	{
 		return "\n\t<tr>" + data + "\n\t</tr>";
 	}
@@ -61,7 +61,7 @@ public class HtmlTable
 		return sb.toString();
 	}
 
-	public static String makeCell(String data, String styleClass)
+	public static String makeCell(String data, String styleClass)//TODO: Change This
 	{
 		return "\n<td class=\"" + styleClass + "\">" + data + "</td>";
 	}

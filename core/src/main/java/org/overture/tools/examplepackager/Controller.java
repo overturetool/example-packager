@@ -158,12 +158,16 @@ public class Controller
 		logOuputFiles.mkdirs();
 
 		StringBuilder sb = new StringBuilder();
+		sb.append(HtmlPage.markdown_header(inputRootFolder.getName()));
 		Collections.sort(projects);
 		for (ProjectPacker p : projects)
 		{
 			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
 			System.out.println("Creating web entry for: " + name);
+			
+			
+			
 			sb.append(HtmlPage.makeH(3, name));
 
 			System.out.print(" table...");
@@ -188,22 +192,25 @@ public class Controller
 
 		}
 
-		String page = HtmlPage.makePage(HtmlPage.makeH1(inputRootFolder.getName()
-				+ ": Examples")
-				+ sb.toString());
+		String page = //HtmlPage.makePage(HtmlPage.makeH1(inputRootFolder.getName()
+				//+ ": Examples")
+				//+ 
+				sb.toString();
 		if (!overtureCSSWeb)
 		{
-			FileUtils.writeFile(page, new File(logOutput, "index.html"));
+			FileUtils.writeFile(page, new File(logOutput, "index.md"));
 		} else
 		{
-			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(logOutput, "style.css"));
+			//FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(logOutput, "style.css"));
 
 			// overturetool
-			String pageSection = HtmlPage.makeOvertureStyleCss()
-					+ "\n"
-					+ HtmlPage.makeDiv(sb.toString().replaceAll("href=\"", "href=\""
-							+ HtmlPage.overtureExamplesPreLink), "examples");
-			FileUtils.writeFile(pageSection, new File(logOutput, "index.html"));
+			String pageSection = //HtmlPage.makeOvertureStyleCss()
+					//+ "\n"
+					//+ 
+					//HtmlPage.makeDiv(
+					sb.toString().replaceAll("href=\"", "href=\""
+							+ HtmlPage.overtureExamplesPreLink);//, "examples");
+			FileUtils.writeFile(pageSection, new File(logOutput, "index.md"));
 		}
 
 	}
@@ -223,6 +230,7 @@ public class Controller
 
 		StringBuilder sb = new StringBuilder();
 
+		sb.append(HtmlPage.markdown_header("Web Overview Page"));
 		sb.append(HtmlPage.makeH1("Overture Examples"));
 
 		for (Controller controller : controllers)
@@ -231,7 +239,7 @@ public class Controller
 			sb.append(HtmlPage.makeLink("--root--", controller.getName()));
 			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeLink("--web--", controller.getName()
-					+ "/index.html"));
+					+ "/index.md"));
 		}
 
 		sb.append(HtmlPage.makeBr());
@@ -243,24 +251,27 @@ public class Controller
 			sb.append(HtmlPage.makeLink(file.getName(), file.getName()));
 			sb.append(HtmlPage.makeBr());
 		}
-
-		String page = HtmlPage.makePage(sb.toString());
+		
+		//String page = HtmlPage.makePage(sb.toString());
+		String page = sb.toString();//HtmlPage.markdown_header("Web Overview Page");
 		
 		if (overtureCSSWeb)
 		{
 			// overturetool
-						page= HtmlPage.makeOvertureStyleCss()
-								+ "\n"
-								+ HtmlPage.makeDiv(sb.toString()/*.replaceAll("href=\"", "href=\""
-										+ HtmlPage.overtureExamplesPreLink)*/, "examples");
+						page= //HtmlPage.makeOvertureStyleCss()
+								//+ "\n"
+								//+ HtmlPage.makeDiv(
+								sb.toString();/*.replaceAll("href=\"", "href=\""
+										+ HtmlPage.overtureExamplesPreLink), "examples");*/
+			//markdown
+						//page = HtmlPage.markdown_header(controllers);
 			
-			
-			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(webDir, "style.css"));
+			//FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(webDir, "style.css"));
 		}else
 		{
 			
 		}
-		FileUtils.writeFile(page, new File(webDir, "index.html"));
+		FileUtils.writeFile(page, new File(webDir, "index.md"));
 
 	}
 

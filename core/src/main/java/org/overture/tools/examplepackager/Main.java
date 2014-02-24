@@ -64,6 +64,7 @@ public class Main
 		Option inputOpt = new Option("i", "input", true, "the path of the examples folder");
 		inputOpt.setRequired(true);
 		Option outputOpt = new Option("o", "output", true, "the path to where output files are written");
+		
 
 		options.addOption(helpOpt);
 		options.addOption(genWebOpt);
