@@ -19,7 +19,6 @@
 package org.overture.tools.examplepackager;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -171,11 +170,17 @@ public class Controller
 			sb.append(HtmlPage.makeH(3, name));
 
 			System.out.print(" table...");
-			String rows = tableRow("Project Name:", name);
-			rows += tableRow("Author:", p.getSettings().getTexAuthor());
+			//String rows = tableRow("Project Name:", name);
+			String rows = HtmlTable.makeRow("Project Name:", name);
+			//rows += tableRow("Author:", p.getSettings().getTexAuthor());
+			rows += HtmlTable.makeRow("Author:", p.getSettings().getTexAuthor());
 			// rows += tableRow("Dialect:", p.getSettings().getDialect().toString());
-			rows += tableRow("Language Version:", p.getSettings().getLanguageVersion().toString());
-			rows += tableRow("Description:", p.getSettings().getContent());
+			//rows += tableRow("Language Version:", p.getSettings().getLanguageVersion().toString());
+			rows += HtmlTable.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());
+			//rows += tableRow("Description:", p.getSettings().getContent());
+			String project_content = p.getSettings().getContent().replaceAll("\n","");
+			//String project_content = p.getSettings().getContent().replaceFirst("\n","");
+			rows += HtmlTable.makeRow("Description:", project_content);
 
 			String pdfLink = "";
 
@@ -183,7 +188,10 @@ public class Controller
 			File zipFile = new File(logOuputFiles, name + ".zip");
 			p.zipTo(zipFile);
 
-			rows += tableRow("Download:", HtmlPage.makeLink("model", outputFolderName
+//			rows += tableRow("Download:", HtmlPage.makeLink("model", outputFolderName
+//					+ "/" + zipFile.getName())
+//					+ " " + pdfLink);
+			rows += HtmlTable.makeRow("Download:", HtmlPage.makeLink("model", outputFolderName
 					+ "/" + zipFile.getName())
 					+ " " + pdfLink);
 
@@ -215,12 +223,12 @@ public class Controller
 
 	}
 
-	private String tableRow(String... cells)
-	{
-		List<String> c = Arrays.asList(cells);
-		return HtmlTable.makeRow(HtmlTable.makeCell(cells[0], "first")
-				+ HtmlTable.makeCells(c.subList(1, c.size())));
-	}
+//	private String tableRow(String... cells)
+//	{
+//		List<String> c = Arrays.asList(cells);
+//		return HtmlTable.makeRow(HtmlTable.makeCell(cells[0], "first")
+//				+ HtmlTable.makeCells(c.subList(1, c.size())));
+//	}
 
 	public void createWebOverviewPage(List<Controller> controllers,
 			List<File> zipFiles, boolean overtureCSSWeb)

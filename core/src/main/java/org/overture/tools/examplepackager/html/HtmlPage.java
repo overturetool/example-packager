@@ -161,7 +161,7 @@ public class HtmlPage
 	
 	public static String markdown_header(String name)
 	{
-		return "---\nlayout: default\ntitle:" + name + "\n---\n";
+		return "---\nlayout: default\ntitle: " + name + "\n---\n";
 		
 		
 	}
