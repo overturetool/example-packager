@@ -38,6 +38,7 @@ public class Main
 	static boolean zip = false;
 	static boolean web = false;
 	static boolean overtureCSSWeb = false;
+	static boolean markdown = false;
 
 	/**
 	 * @param args
@@ -64,13 +65,17 @@ public class Main
 		Option inputOpt = new Option("i", "input", true, "the path of the examples folder");
 		inputOpt.setRequired(true);
 		Option outputOpt = new Option("o", "output", true, "the path to where output files are written");
+		Option genMarkDown = new Option("m","markdown",false,"generate markdown");
+		
 
 		options.addOption(helpOpt);
 		options.addOption(genWebOpt);
+		options.addOption(genMarkDown);
 		options.addOption(overtureCssWebOpt);
 		options.addOption(genZipbundleOpt);
 		options.addOption(inputOpt);
 		options.addOption(outputOpt);
+		
 
 		CommandLine line = null;
 		try
@@ -156,6 +161,10 @@ public class Main
 		if (web)
 		{
 			controller.createWebOverviewPage(controllers, zipFiles,overtureCSSWeb);
+		}
+		if(markdown)
+		{
+			controller.createWebSite(markdown);
 		}
 		Controller.delete(tmpFolder);
 

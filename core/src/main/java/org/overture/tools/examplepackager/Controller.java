@@ -19,7 +19,6 @@
 package org.overture.tools.examplepackager;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -153,66 +152,75 @@ public class Controller
 		File logOutput = new File(webDir, inputRootFolder.getName());
 		logOutput.mkdirs();
 
-		String outputFolderName = dialect.toString().replaceAll("_", "");
-		File logOuputFiles = new File(logOutput, outputFolderName);
-		logOuputFiles.mkdirs();
+//		String outputFolderName = dialect.toString().replaceAll("_", "");
+//		File logOuputFiles = new File(logOutput, outputFolderName);
+//		logOuputFiles.mkdirs();
 
 		StringBuilder sb = new StringBuilder();
+		sb.append(HtmlPage.markdown_header(inputRootFolder.getName()));
 		Collections.sort(projects);
 		for (ProjectPacker p : projects)
 		{
 			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
 			System.out.println("Creating web entry for: " + name);
+			
+			//sb.append(HtmlPage.markdown_header(p.getSettings().getName()));
+			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeH(3, name));
 
 			System.out.print(" table...");
-			String rows = tableRow("Project Name:", name);
-			rows += tableRow("Author:", p.getSettings().getTexAuthor());
-			// rows += tableRow("Dialect:", p.getSettings().getDialect().toString());
-			rows += tableRow("Language Version:", p.getSettings().getLanguageVersion().toString());
-			rows += tableRow("Description:", p.getSettings().getContent());
+			
+			String rows = HtmlTable.makeRow("Project Name:", name);
+			
+			rows += HtmlTable.makeRow("Author:", p.getSettings().getTexAuthor());
+			
+			rows += HtmlTable.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());
+		
+			String project_content = p.getSettings().getContent().replaceAll("\n","");
+			
+			rows += HtmlTable.makeRow("Description:", project_content);
 
 			String pdfLink = "";
 
+			File folder = new File(logOutput,p.getSettings().getName());
+			folder.mkdir();
 			System.out.print(" zip...");
-			File zipFile = new File(logOuputFiles, name + ".zip");
+			File zipFile = new File(/*logOuputFiles*/folder, name + ".zip");
 			p.zipTo(zipFile);
 
-			rows += tableRow("Download:", HtmlPage.makeLink("model", outputFolderName
+//			rows += tableRow("Download:", HtmlPage.makeLink("model", outputFolderName
+//					+ "/" + zipFile.getName())
+//					+ " " + pdfLink);
+			
+			
+			rows += HtmlTable.makeRow("Download:", HtmlPage.makeLink("model", /*outputFolderName*/p.getSettings().getName()
 					+ "/" + zipFile.getName())
 					+ " " + pdfLink);
+			
 
 			sb.append(HtmlTable.makeTable(rows));
 			System.out.print("\n");
+			
 
 		}
 
-		String page = HtmlPage.makePage(HtmlPage.makeH1(inputRootFolder.getName()
-				+ ": Examples")
-				+ sb.toString());
+		String page = sb.toString();
+		
 		if (!overtureCSSWeb)
 		{
-			FileUtils.writeFile(page, new File(logOutput, "index.html"));
+			FileUtils.writeFile(page, new File(logOutput, "index.md"));
 		} else
 		{
-			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(logOutput, "style.css"));
+			
 
 			// overturetool
-			String pageSection = HtmlPage.makeOvertureStyleCss()
-					+ "\n"
-					+ HtmlPage.makeDiv(sb.toString().replaceAll("href=\"", "href=\""
-							+ HtmlPage.overtureExamplesPreLink), "examples");
-			FileUtils.writeFile(pageSection, new File(logOutput, "index.html"));
+			String pageSection = sb.toString().replaceAll("href=\"", "href=\""
+							+ HtmlPage.overtureExamplesPreLink);
+			
+			FileUtils.writeFile(pageSection, new File(logOutput, "index.md"));
 		}
 
-	}
-
-	private String tableRow(String... cells)
-	{
-		List<String> c = Arrays.asList(cells);
-		return HtmlTable.makeRow(HtmlTable.makeCell(cells[0], "first")
-				+ HtmlTable.makeCells(c.subList(1, c.size())));
 	}
 
 	public void createWebOverviewPage(List<Controller> controllers,
@@ -223,15 +231,18 @@ public class Controller
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(HtmlPage.makeH1("Overture Examples"));
+		sb.append(HtmlPage.markdown_header("Web Overview Page"));
+		sb.append(HtmlPage.makeH(1,"Overture Examples"));
 
 		for (Controller controller : controllers)
 		{
 			sb.append(HtmlPage.makeH(2, controller.getName()));
+			
 			sb.append(HtmlPage.makeLink("--root--", controller.getName()));
 			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeLink("--web--", controller.getName()
 					+ "/index.html"));
+			sb.append(HtmlPage.makeBr());
 		}
 
 		sb.append(HtmlPage.makeBr());
@@ -240,27 +251,24 @@ public class Controller
 		sb.append(HtmlPage.makeH(2, "Download example collections"));
 		for (File file : zipFiles)
 		{
+			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeLink(file.getName(), file.getName()));
 			sb.append(HtmlPage.makeBr());
 		}
-
-		String page = HtmlPage.makePage(sb.toString());
+		
+		
+		String page = sb.toString();
 		
 		if (overtureCSSWeb)
 		{
 			// overturetool
-						page= HtmlPage.makeOvertureStyleCss()
-								+ "\n"
-								+ HtmlPage.makeDiv(sb.toString()/*.replaceAll("href=\"", "href=\""
-										+ HtmlPage.overtureExamplesPreLink)*/, "examples");
-			
-			
-			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(webDir, "style.css"));
+						page = sb.toString();/*.replaceAll("href=\"", "href=\""
+										+ HtmlPage.overtureExamplesPreLink), "examples");*/
 		}else
 		{
 			
 		}
-		FileUtils.writeFile(page, new File(webDir, "index.html"));
+		FileUtils.writeFile(page, new File(webDir, "index.md"));
 
 	}
 

@@ -18,8 +18,6 @@
  *******************************************************************************/
 package org.overture.tools.examplepackager.html;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class HtmlTable
 {
@@ -28,51 +26,55 @@ public class HtmlTable
 
 	public static String makeTable(String data)
 	{
-		return "\n<table class=\"mytable\">" + data + "\n</table>";
+		//return "\n<table class=\"mytable\">" + data + "\n</table>\n";
+		return "\n| | |\n|------|-------|\n" + data;
 	}
 
-	public static String makeRow(String data)
+	public static String makeRow(String title, String data)//TODO: Change This
 	{
-		return "\n\t<tr>" + data + "\n\t</tr>";
+		//return "\n\t<tr>" + data + "\n\t</tr>";
+		return "|**" + title + "**|" + data +"|\n";
 	}
 
-	public static String makeRowTotal(String data)
-	{
-		return "\n\t<tr class=\"total\">" + data + "\n\t</tr>";
-	}
+//	public static String makeRowTotal(String data)
+//	{
+//		return "\n\t<tr class=\"total\">" + data + "\n\t</tr>";
+//	}
 
-	public static String makeCell(String data)
-	{
-		return "\n<td>" + data + "</td>";
-	}
+//	public static String makeCell(String data)
+//	{
+//		return "\n<td>" + data + "</td>";
+//		//return data +"|\n";
+//	}
 
-	public static String makeCells(String[] data)
-	{
-		return makeCells(Arrays.asList(data));
-	}
+//	public static String makeCells(String[] data)
+//	{
+//		return makeCells(Arrays.asList(data));
+//	}
 
-	public static String makeCells(List<String> data)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (String string : data)
-		{
-			sb.append(makeCell(string));
-		}
-		return sb.toString();
-	}
+//	public static String makeCells(List<String> data)
+//	{
+//		StringBuilder sb = new StringBuilder();
+//		for (String string : data)
+//		{
+//			sb.append(makeCell(string));
+//		}
+//		return sb.toString();
+//	}
 
-	public static String makeCell(String data, String styleClass)
-	{
-		return "\n<td class=\"" + styleClass + "\">" + data + "</td>";
-	}
-
-	public static String makeCellHeaderss(String[] data)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (String string : data)
-		{
-			sb.append("\n<th>" + string + "</th>");
-		}
-		return sb.toString();
-	}
+//	public static String makeCell(String data, String styleClass)//TODO: Change This
+//	{
+//		return "\n<td class=\"" + styleClass + "\">" + data + "</td>";
+//		//return "|*"+data+"*|";
+//	}
+//
+//	public static String makeCellHeaderss(String[] data)
+//	{
+//		StringBuilder sb = new StringBuilder();
+//		for (String string : data)
+//		{
+//			sb.append("\n<th>" + string + "</th>");
+//		}
+//		return sb.toString();
+//	}
 }
