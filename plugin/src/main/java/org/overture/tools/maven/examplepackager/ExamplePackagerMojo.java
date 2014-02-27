@@ -86,6 +86,12 @@ public class ExamplePackagerMojo extends AbstractMojo {
     protected File outputDirectory;
 
     /**
+     * Name of the directory into which the markdown web pages would be generated.
+     */
+    @Parameter(defaultValue="${project.build.directory}")
+    protected File markdownOutputDirectory;
+    
+    /**
      * Location of the staging directory for the example packager.
      */
     @Parameter(defaultValue="${project.build.directory}/generated-resources/example-packager", readonly=true)
@@ -114,6 +120,11 @@ public class ExamplePackagerMojo extends AbstractMojo {
             {
             	controller.createWebSite(overtureCSSWeb);
             }
+            
+            if(outputMarkdownFiles)
+            {
+            	controller.createWebSite(overtureCSSWeb);
+            }
     	}
 
     	for (File exampleDir : examplePPBaseDirectories) {
@@ -127,6 +138,11 @@ public class ExamplePackagerMojo extends AbstractMojo {
             {
             	controller.createWebSite(overtureCSSWeb);
             }
+            
+            if(outputMarkdownFiles)
+            {
+            	controller.createWebSite(overtureCSSWeb);
+            }
     	}
 
     	for (File exampleDir : exampleRTBaseDirectories) {
@@ -137,6 +153,11 @@ public class ExamplePackagerMojo extends AbstractMojo {
             controller.packExamples(new File(tmpdir, exampleDir.getName()), zipFile, !outputZipFiles);
             
             if(outputWebFiles)
+            {
+            	controller.createWebSite(overtureCSSWeb);
+            }
+            
+            if(outputMarkdownFiles)
             {
             	controller.createWebSite(overtureCSSWeb);
             }
