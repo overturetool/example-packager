@@ -24,9 +24,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.overture.tools.examplepackager.html.HtmlPage;
-import org.overture.tools.examplepackager.html.HtmlPage_fault;
 import org.overture.tools.examplepackager.html.HtmlTable;
-import org.overture.tools.examplepackager.html.HtmlTable_fault;
 import org.overture.tools.examplepackager.html.MarkdownPage;
 import org.overture.tools.examplepackager.util.FileUtils;
 import org.overture.tools.examplepackager.util.FolderZipper;
@@ -174,15 +172,15 @@ public class Controller_fault
 
 			System.out.print(" table...");
 			
-			String rows = HtmlTable_fault.makeRow("Project Name:", name);
+			String rows = MarkdownPage.makeRow("Project Name:", name);
 			
-			rows += HtmlTable_fault.makeRow("Author:", p.getSettings().getTexAuthor());
+			rows += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());
 			
-			rows += HtmlTable_fault.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());
+			rows += MarkdownPage.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());
 		
 			String project_content = p.getSettings().getContent().replaceAll("\n","");
 			
-			rows += HtmlTable_fault.makeRow("Description:", project_content);
+			rows += MarkdownPage.makeRow("Description:", project_content);
 
 			String pdfLink = "";
 
@@ -197,7 +195,7 @@ public class Controller_fault
 //					+ " " + pdfLink);
 			
 			
-			rows += HtmlTable_fault.makeRow("Download:", HtmlPage.makeLink("model", /*outputFolderName*/p.getSettings().getName()
+			rows += MarkdownPage.makeRow("Download:", HtmlPage.makeLink("model", /*outputFolderName*/p.getSettings().getName()
 					+ "/" + zipFile.getName())
 					+ " " + pdfLink);
 			

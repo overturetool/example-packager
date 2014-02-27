@@ -257,33 +257,55 @@ public class Controller
 		printSubHeading("Producing main website".toUpperCase());
 
 		StringBuilder sb = new StringBuilder();
+		StringBuilder md = new StringBuilder();
+		
+		md.append(MarkdownPage.markdown_header("Overture Examples", "default"));
+		md.append(MarkdownPage.makeH(1, "Overture Examples"));
 
 		sb.append(HtmlPage.makeH1("Overture Examples"));
 
 		for (Controller controller : controllers)
 		{
+			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeH(2, controller.getName()));
+			md.append(MarkdownPage.makeH(2, controller.getName()));
+			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeLink("--root--", controller.getName()));
+			md.append(MarkdownPage.makeLink("--root--", "../"+controller.getName()));
+			//md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeBr());
+			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeLink("--web--", controller.getName()
+					+ "/index.html"));
+			md.append(HtmlPage.makeLink("--web--", "../"+controller.getName()
 					+ "/index.html"));
 		}
 
 		sb.append(HtmlPage.makeBr());
 		sb.append(HtmlPage.makeBr());
+		
+		md.append(MarkdownPage.makeBr());
+		md.append(MarkdownPage.makeBr());
+		
 
 		sb.append(HtmlPage.makeH(2, "Download example collections"));
+		
+		md.append(MarkdownPage.makeH(2, "Download example collections"));
 		for (File file : zipFiles)
 		{
+			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeLink(file.getName(), file.getName()));
+			md.append(MarkdownPage.makeLink(file.getName(), "../"+file.getName()));
+			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeBr());
 		}
 
 		String page = HtmlPage.makePage(sb.toString());
 		
+		String markdownpage = md.toString();
 		if (overtureCSSWeb)
 		{
-			// overturetool
+			// overturetool - hteml page
 						page= HtmlPage.makeOvertureStyleCss()
 								+ "\n"
 								+ HtmlPage.makeDiv(sb.toString()/*.replaceAll("href=\"", "href=\""
@@ -291,11 +313,22 @@ public class Controller
 			
 			
 			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(webDir, "style.css"));
+			
+			
 		}else
 		{
 			
 		}
+		//Html
 		FileUtils.writeFile(page, new File(webDir, "index.html"));
+		//markdown
+		if (!overtureCSSWeb)
+		{
+			File mdfolder = new File(webDir,"markdown");
+			mdfolder.mkdirs();
+			FileUtils.writeFile(markdownpage,new File(mdfolder, "index.md"));
+		}
+		//
 
 	}
 
