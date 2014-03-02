@@ -19,9 +19,14 @@
 package org.overture.tools.examplepackager;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 
 import org.overture.tools.examplepackager.html.HtmlPage;
@@ -212,6 +217,57 @@ public class Controller
 			md.append(MarkdownPage.makeTable(rowsmarkdown));
 			sb.append(HtmlTable.makeTable(rows));
 			System.out.print("\n");
+			
+			//First attempt to create the overall document for each project
+			
+			File prj_files = new File(inputRootFolder.getName(),"/"+ p.getSettings().getName()+"/");
+			 
+			StringBuilder sumString = new StringBuilder();
+			//sumString.append(prj_files.length());
+			
+			sumString.append(MarkdownPage.makeH(2, prj_files.toString()));
+			sumString.append(inputRootFolder.isDirectory());
+			
+			if(inputRootFolder.isDirectory())
+			{
+				File filelist = new File(inputRootFolder,"");
+				for(File file:filelist.listFiles())
+				{
+					sumString.append(file.toString());
+					sumString.append(MarkdownPage.makeBr());
+				}
+			}
+			
+			//sumString.append(prj_files.listFiles().toString());
+			
+			//List<String> filelist = listFilesForFolder(prj_files);
+//			
+//			for(File file:filelist.listFiles())
+//			{
+//				sumString.append(MarkdownPage.makeH(2, file.toString()));
+//				sumString.append(MarkdownPage.makeBr());
+				
+				//File file_contents = new File(file.toString());
+
+//				Scanner scanner = new Scanner(new FileInputStream(file));
+//				try{
+//				while(scanner.hasNextLine())
+//				{
+//					sumString.append(scanner.nextLine());
+//				}
+//				}
+//				finally 
+//				{
+//					scanner.close();
+//				}
+//				
+//				sumString.append(MarkdownPage.makeBr());
+//				
+//			}
+			//sumString.append(prj_files.toString());
+			
+			FileUtils.writeFile(sumString.toString(), new File(folder,"overall.md"));
+			
 
 		}
 
@@ -241,6 +297,20 @@ public class Controller
 			FileUtils.writeFile(markdownpage, new File(logOuputFiles,"index.md"));
 		}
 
+	}
+	
+	public List<String> listFilesForFolder(final File folder) {
+		List<String> file = new ArrayList<String>();
+		for (final File fileEntry : folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            listFilesForFolder(fileEntry);
+	        } else {
+	           // System.out.println(fileEntry.getName());
+	        	file.add(fileEntry.getName()); 
+	        }
+	    }
+		
+	    return file;	
 	}
 
 	private String tableRow(String... cells)

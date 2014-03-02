@@ -66,6 +66,7 @@ public class Main
 		inputOpt.setRequired(true);
 		Option outputOpt = new Option("o", "output", true, "the path to where output files are written");
 		Option genMarkDown = new Option("m","markdown",false,"generate markdown");
+		Option markdownOutput = new Option("M", "markdownOutput",true, "the path to where outfile in markdown would be written");
 		
 
 		options.addOption(helpOpt);
@@ -75,6 +76,7 @@ public class Main
 		options.addOption(genZipbundleOpt);
 		options.addOption(inputOpt);
 		options.addOption(outputOpt);
+		options.addOption(markdownOutput);
 		
 
 		CommandLine line = null;
