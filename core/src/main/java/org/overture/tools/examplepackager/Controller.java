@@ -21,12 +21,11 @@ package org.overture.tools.examplepackager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Vector;
 
 import org.overture.tools.examplepackager.html.HtmlPage;
@@ -153,6 +152,7 @@ public class Controller
 
 	public void createWebSite(boolean overtureCSSWeb)
 	{
+		int i = 0;
 		webDir.mkdirs();
 		printSubHeading("Producing website".toUpperCase());
 
@@ -171,6 +171,7 @@ public class Controller
 		Collections.sort(projects);
 		for (ProjectPacker p : projects)
 		{
+			
 			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
 			System.out.println("Creating web entry for: " + name);
@@ -218,57 +219,11 @@ public class Controller
 			sb.append(HtmlTable.makeTable(rows));
 			System.out.print("\n");
 			
-			//First attempt to create the overall document for each project
+			//Creating the overall file.
+			overallMarkdownFile(i, folder);
+			i++;
+		
 			
-			File prj_files = new File(inputRootFolder.getName(),"/"+ p.getSettings().getName()+"/");
-			 
-			StringBuilder sumString = new StringBuilder();
-			//sumString.append(prj_files.length());
-			
-			sumString.append(MarkdownPage.makeH(2, prj_files.toString()));
-			sumString.append(inputRootFolder.isDirectory());
-			
-			if(inputRootFolder.isDirectory())
-			{
-				File filelist = new File(inputRootFolder,"");
-				for(File file:filelist.listFiles())
-				{
-					sumString.append(file.toString());
-					sumString.append(MarkdownPage.makeBr());
-				}
-			}
-			
-			//sumString.append(prj_files.listFiles().toString());
-			
-			//List<String> filelist = listFilesForFolder(prj_files);
-//			
-//			for(File file:filelist.listFiles())
-//			{
-//				sumString.append(MarkdownPage.makeH(2, file.toString()));
-//				sumString.append(MarkdownPage.makeBr());
-				
-				//File file_contents = new File(file.toString());
-
-//				Scanner scanner = new Scanner(new FileInputStream(file));
-//				try{
-//				while(scanner.hasNextLine())
-//				{
-//					sumString.append(scanner.nextLine());
-//				}
-//				}
-//				finally 
-//				{
-//					scanner.close();
-//				}
-//				
-//				sumString.append(MarkdownPage.makeBr());
-//				
-//			}
-			//sumString.append(prj_files.toString());
-			
-			FileUtils.writeFile(sumString.toString(), new File(folder,"overall.md"));
-			
-
 		}
 
 		String markdownpage = md.toString();
@@ -311,6 +266,93 @@ public class Controller
 	    }
 		
 	    return file;	
+	}
+	
+	public void overallMarkdownFile(int i, File folder)
+	{
+		//First attempt to create the overall document for each project
+		
+		//File prj_files = new File(inputRootFolder.getName(),"/"+ p.getSettings().getName()+"/");
+		StringBuilder sumString = new StringBuilder();
+		//sumString.append(prj_files.length());
+		
+		sumString.append(MarkdownPage.makeH(2, inputRootFolder.getName()));
+		//sumString.append(inputRootFolder.isDirectory());
+		sumString.append(MarkdownPage.makeBr());
+		File folders = new File(inputRootFolder,"");
+		
+		if(folders.isDirectory())
+		{
+			
+			File[] subfolders = folders.listFiles();
+			Arrays.sort(subfolders);
+			
+			//sumString.append(Arrays.sort(subfolders));
+			for(File x:subfolders)
+			{
+				sumString.append(x + "\n");
+			}
+			
+			if (i < subfolders.length)
+			{
+				sumString.append(MarkdownPage.makeH(2,subfolders[i].toString()));
+				sumString.append(MarkdownPage.makeBr());
+				File filelister = new File(subfolders[i],"");
+				List<String> files = listFilesForFolder(filelister);
+				for(String context:files)
+				{
+					sumString.append(MarkdownPage.makeBr());
+					sumString.append(context);
+				}
+				
+				
+			}
+			//List<String> files = listFilesForFolder(filelister);
+			
+			//Collections.sort(files);
+			
+			
+			//sumString.append(MarkdownPage.makeBr());
+			//
+			//for(File file:subfolders)
+			//{
+//				File filelister = new File(file,"");
+//				List<String> files = listFilesForFolder(filelister);
+//				//sumString.append(files);
+//				for(String context:files)
+//				{
+				//sumString.append(MarkdownPage.makeBr());
+				//sumString.append(file);
+//					File filecontext = new File(file,"/"+context);
+//					sumString.append(MarkdownPage.makeBr());
+//					sumString.append(filecontext);
+//					if (filecontext.exists()){
+//					Scanner scanner = new Scanner(filecontext);
+//					
+//					sumString.append(scanner.next());
+//					sumString.append(MarkdownPage.makeBr());
+//					scanner.close();
+//						try {
+//							FileInputStream fis = new FileInputStream(filecontext);
+//							while (fis.read() != -1){
+//								//String c = fis.toString();
+//								//sumString.append(c);
+//							}
+//							fis.close();
+//						} catch (FileNotFoundException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+						
+			//		}
+				}
+//				sumString.append(file.toString());
+				sumString.append(MarkdownPage.makeBr());
+				FileUtils.writeFile(sumString.toString(), new File(folder,"overall.md"));
+				
 	}
 
 	private String tableRow(String... cells)
