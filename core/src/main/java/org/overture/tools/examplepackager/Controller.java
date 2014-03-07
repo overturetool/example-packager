@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -276,7 +277,7 @@ public class Controller
 		StringBuilder sumString = new StringBuilder();
 		//sumString.append(prj_files.length());
 		
-		sumString.append(MarkdownPage.makeH(2, inputRootFolder.getName()));
+		sumString.append(MarkdownPage.makeH(1, inputRootFolder.getName()));
 		//sumString.append(inputRootFolder.isDirectory());
 		sumString.append(MarkdownPage.makeBr());
 		File folders = new File(inputRootFolder,"");
@@ -286,23 +287,30 @@ public class Controller
 			
 			File[] subfolders = folders.listFiles();
 			Arrays.sort(subfolders);
-			
+			ArrayList<String> sorting = new ArrayList<String>();
 			//sumString.append(Arrays.sort(subfolders));
 			for(File x:subfolders)
 			{
-				sumString.append(x + "\n");
+				
+				sorting.add(x.toString());
+				
+				//sumString.append(x + "\n");
 			}
+			Collections.sort(sorting,sorting.toString().CASE_INSENSITIVE_ORDER);
 			
-			if (i < subfolders.length)
+			if (i <= subfolders.length)
 			{
-				sumString.append(MarkdownPage.makeH(2,subfolders[i].toString()));
+				sumString.append(MarkdownPage.makeH(2,sorting.get(i).toString()));
 				sumString.append(MarkdownPage.makeBr());
-				File filelister = new File(subfolders[i],"");
+				File filelister = new File(sorting.get(i),"");
 				List<String> files = listFilesForFolder(filelister);
 				for(String context:files)
 				{
 					sumString.append(MarkdownPage.makeBr());
-					sumString.append(context);
+					sumString.append(MarkdownPage.makeH(3, context));
+					sumString.append(MarkdownPage.makeBr());
+					
+					
 				}
 				
 				
