@@ -273,9 +273,9 @@ public class Controller
 	{		
 		StringBuilder sumString = new StringBuilder();
 		
-		sumString.append(MarkdownPage.makeH(1, inputRootFolder.getName()));
-		sumString.append(MarkdownPage.makeBr());
+		
 		File folders = new File(inputRootFolder,"");
+		
 		
 		if(folders.isDirectory())
 		{
@@ -288,21 +288,41 @@ public class Controller
 			{
 				
 				sorting.add(x.toString());
-				
-				//sumString.append(x + "\n");
 			}
 			Collections.sort(sorting,sorting.toString().CASE_INSENSITIVE_ORDER);
 			
 			if (i <= subfolders.length)
 			{
+				File filelister = new File(sorting.get(i),"");
+				sumString.append(MarkdownPage.markdown_header(filelister.getName(), "listing"));
+				sumString.append(MarkdownPage.makeBr());
+				sumString.append(MarkdownPage.makeH(1, inputRootFolder.getName()));
+				sumString.append(MarkdownPage.makeBr());
+				
 				sumString.append(MarkdownPage.makeH(2,sorting.get(i).toString()));
 				sumString.append(MarkdownPage.makeBr());
-				File filelister = new File(sorting.get(i),"");
+				
 				List<String> files = listFilesForFolder(filelister);
 				for(String context:files)
 				{
 					sumString.append(MarkdownPage.makeBr());
 					sumString.append(MarkdownPage.makeH(3, context));
+					sumString.append(MarkdownPage.makeBr());
+					File contextf = new File(sorting.get(i).toString(),context);
+					//sumString.append(contextf);
+					try {
+						FileInputStream streamIn = new FileInputStream(contextf);
+						int c;
+				         while ((c = streamIn.read()) != -1) 
+				         {
+				            sumString.append((char) c);
+				         }
+				         streamIn.close();
+					} catch (FileNotFoundException e) {
+						System.err.println("File read failed: " + e);
+					} catch (IOException e) {
+						System.err.println("File read failed: " + e);
+					}
 					sumString.append(MarkdownPage.makeBr());
 					
 					
