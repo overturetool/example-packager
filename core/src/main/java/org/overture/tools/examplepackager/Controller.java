@@ -270,15 +270,10 @@ public class Controller
 	}
 	
 	public void overallMarkdownFile(int i, File folder)
-	{
-		//First attempt to create the overall document for each project
-		
-		//File prj_files = new File(inputRootFolder.getName(),"/"+ p.getSettings().getName()+"/");
+	{		
 		StringBuilder sumString = new StringBuilder();
-		//sumString.append(prj_files.length());
 		
 		sumString.append(MarkdownPage.makeH(1, inputRootFolder.getName()));
-		//sumString.append(inputRootFolder.isDirectory());
 		sumString.append(MarkdownPage.makeBr());
 		File folders = new File(inputRootFolder,"");
 		
@@ -286,7 +281,7 @@ public class Controller
 		{
 			
 			File[] subfolders = folders.listFiles();
-			Arrays.sort(subfolders);
+			//Arrays.sort(subfolders);
 			ArrayList<String> sorting = new ArrayList<String>();
 			//sumString.append(Arrays.sort(subfolders));
 			for(File x:subfolders)
