@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,16 +41,23 @@ public class Controller
 	File inputRootFolder;
 	boolean verbose = true;
 	public final File webDir;// = new File("Web");
+	public File markdownDir;
 
+	public Controller(Dialect dialect, File inputRootFolder, File output, File markdownOutput)
+	{
+		this(dialect,inputRootFolder,output);
+		this.markdownDir = new File(markdownOutput, "markdown");
+	}
+	
 	public Controller(Dialect dialect, File inputRootFolder, File output)
 	{
 		this.dialect = dialect;
 		this.inputRootFolder = inputRootFolder;
 		this.webDir = new File(output, "Web");
-		//this.markdownDir = new File(output, "markdown");
+		
 	}
-
-	public Controller(Dialect dialect, File inputRootFolder, File output,
+	
+	public Controller(Dialect dialect, File inputRootFolder, File output, 
 			boolean verbose)
 	{
 		this(dialect, inputRootFolder, output);
