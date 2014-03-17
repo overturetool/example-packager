@@ -162,12 +162,12 @@ public class Controller
 	{
 		int i = 0;
 		webDir.mkdirs();
+		//markdownDir.mkdirs();
 		printSubHeading("Producing website".toUpperCase());
 
 		File logOutput = new File(webDir, inputRootFolder.getName());
 		logOutput.mkdirs();
 
-		//String outputFolderName = dialect.toString().replaceAll("_", "");
 		File logOuputFiles = new File(logOutput, /*outputFolderName*/"markdown");
 		logOuputFiles.mkdirs();
 
