@@ -35,6 +35,7 @@ public class Main
 {
 	static File input;
 	static File output = new File(".");
+	static File markdownfolder = new File(".");
 	static boolean zip = false;
 	static boolean web = false;
 	static boolean overtureCSSWeb = false;
@@ -106,6 +107,11 @@ public class Main
 		{
 			output = new File(line.getOptionValue(outputOpt.getOpt()));
 		}
+		
+		if (line.hasOption(markdownOutput.getOpt()))
+		{
+			markdownfolder = new File(line.getOptionValue(markdownOutput.getOpt()));
+		}
 
 		web = line.hasOption(genWebOpt.getOpt());
 		overtureCSSWeb= line.hasOption(overtureCssWebOpt.getOpt());
@@ -118,7 +124,7 @@ public class Main
 	private static Controller runController(Dialect dialect,
 			File inputRootFolder, File tmpFolder) throws IOException
 	{
-		Controller controller = new Controller(dialect, inputRootFolder, output);
+		Controller controller = new Controller(dialect, inputRootFolder, output, markdownfolder);
 
 		if (zip)
 		{
@@ -130,7 +136,7 @@ public class Main
 
 			zipFiles.add(zipFile);
 		}
-		if (web)
+		if (web || markdown)
 		{
 			controller.packExamples(tmpFolder, null, true);
 			controller.createWebSite(overtureCSSWeb);

@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,15 +41,23 @@ public class Controller
 	File inputRootFolder;
 	boolean verbose = true;
 	public final File webDir;// = new File("Web");
+	public File markdownDir;
 
+	public Controller(Dialect dialect, File inputRootFolder, File output, File markdownOutput)
+	{
+		this(dialect,inputRootFolder,output);
+		this.markdownDir = new File(markdownOutput, "markdown");
+	}
+	
 	public Controller(Dialect dialect, File inputRootFolder, File output)
 	{
 		this.dialect = dialect;
 		this.inputRootFolder = inputRootFolder;
 		this.webDir = new File(output, "Web");
+		
 	}
-
-	public Controller(Dialect dialect, File inputRootFolder, File output,
+	
+	public Controller(Dialect dialect, File inputRootFolder, File output, 
 			boolean verbose)
 	{
 		this(dialect, inputRootFolder, output);
@@ -155,12 +162,12 @@ public class Controller
 	{
 		int i = 0;
 		webDir.mkdirs();
+		//markdownDir.mkdirs();
 		printSubHeading("Producing website".toUpperCase());
 
 		File logOutput = new File(webDir, inputRootFolder.getName());
 		logOutput.mkdirs();
 
-		//String outputFolderName = dialect.toString().replaceAll("_", "");
 		File logOuputFiles = new File(logOutput, /*outputFolderName*/"markdown");
 		logOuputFiles.mkdirs();
 
@@ -281,9 +288,9 @@ public class Controller
 		{
 			
 			File[] subfolders = folders.listFiles();
-			//Arrays.sort(subfolders);
+		
 			ArrayList<String> sorting = new ArrayList<String>();
-			//sumString.append(Arrays.sort(subfolders));
+			
 			for(File x:subfolders)
 			{
 				
@@ -309,7 +316,8 @@ public class Controller
 					sumString.append(MarkdownPage.makeH(3, context));
 					sumString.append(MarkdownPage.makeBr());
 					File contextf = new File(sorting.get(i).toString(),context);
-					//sumString.append(contextf);
+					sumString.append("```");
+					sumString.append(MarkdownPage.makeBr());
 					try {
 						FileInputStream streamIn = new FileInputStream(contextf);
 						int c;
@@ -324,58 +332,17 @@ public class Controller
 						System.err.println("File read failed: " + e);
 					}
 					sumString.append(MarkdownPage.makeBr());
+					sumString.append("```");
 					
 					
 				}
 				
 				
 			}
-			//List<String> files = listFilesForFolder(filelister);
 			
-			//Collections.sort(files);
-			
-			
-			//sumString.append(MarkdownPage.makeBr());
-			//
-			//for(File file:subfolders)
-			//{
-//				File filelister = new File(file,"");
-//				List<String> files = listFilesForFolder(filelister);
-//				//sumString.append(files);
-//				for(String context:files)
-//				{
-				//sumString.append(MarkdownPage.makeBr());
-				//sumString.append(file);
-//					File filecontext = new File(file,"/"+context);
-//					sumString.append(MarkdownPage.makeBr());
-//					sumString.append(filecontext);
-//					if (filecontext.exists()){
-//					Scanner scanner = new Scanner(filecontext);
-//					
-//					sumString.append(scanner.next());
-//					sumString.append(MarkdownPage.makeBr());
-//					scanner.close();
-//						try {
-//							FileInputStream fis = new FileInputStream(filecontext);
-//							while (fis.read() != -1){
-//								//String c = fis.toString();
-//								//sumString.append(c);
-//							}
-//							fis.close();
-//						} catch (FileNotFoundException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						} catch (IOException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-						
-			//		}
-				}
-//				sumString.append(file.toString());
 				sumString.append(MarkdownPage.makeBr());
 				FileUtils.writeFile(sumString.toString(), new File(folder,"overall.md"));
-				
+		}		
 	}
 
 	private String tableRow(String... cells)
