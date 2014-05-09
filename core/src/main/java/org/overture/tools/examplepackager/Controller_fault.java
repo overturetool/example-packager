@@ -62,7 +62,9 @@ public class Controller_fault
 		System.out.println("|                                                                              |");
 		text = "| " + text;
 		while (text.length() < 79)
+		{
 			text += " ";
+		}
 		text += "|";
 
 		System.out.println(text);
@@ -74,7 +76,9 @@ public class Controller_fault
 		System.out.println("--------------------------------------------------------------------------------");
 		text = "| " + text;
 		while (text.length() < 79)
+		{
 			text += " ";
+		}
 		text += "|";
 
 		System.out.println(text);
@@ -89,12 +93,16 @@ public class Controller_fault
 		}
 
 		if (verbose)
+		{
 			printSubHeading("PACKING: " + inputRootFolder.getName());
+		}
 		for (File exampleFolder : inputRootFolder.listFiles())
 		{
 			if (!exampleFolder.isDirectory()
 					|| exampleFolder.getName().equals(".svn"))
+			{
 				continue;
+			}
 
 			ProjectPacker p = new ProjectPacker(exampleFolder, dialect, verbose);
 			if (!dryrun)
@@ -106,12 +114,16 @@ public class Controller_fault
 		if (!dryrun)
 		{
 			if (zipName.exists())
+			{
 				zipName.delete();
+			}
 
 			FolderZipper.zipFolder(outputFolder.getAbsolutePath(), zipName.getAbsolutePath());
 			if (verbose)
+			{
 				printSubHeading("Folder zipped: ".toUpperCase()
 						+ zipName.getName());
+			}
 		}
 
 	}
@@ -121,8 +133,9 @@ public class Controller_fault
 		try
 		{
 			if (tmpFolder != null && tmpFolder.isFile() && tmpFolder.exists())
+			{
 				tmpFolder.delete();
-			else if (tmpFolder.exists())
+			} else if (tmpFolder.exists())
 			{
 				for (File file : tmpFolder.listFiles())
 				{
@@ -135,8 +148,10 @@ public class Controller_fault
 			System.err.println("\nFaild to deleting: " + tmpFolder);
 		}
 		if (tmpFolder.exists())
+		{
 			System.err.println("\nFaild to deleting - file not closed: "
 					+ tmpFolder);
+		}
 	}
 
 	public Integer count = 0;
@@ -153,72 +168,68 @@ public class Controller_fault
 		File logOutput = new File(webDir, inputRootFolder.getName());
 		logOutput.mkdirs();
 
-//		String outputFolderName = dialect.toString().replaceAll("_", "");
-//		File logOuputFiles = new File(logOutput, outputFolderName);
-//		logOuputFiles.mkdirs();
+		// String outputFolderName = dialect.toString().replaceAll("_", "");
+		// File logOuputFiles = new File(logOutput, outputFolderName);
+		// logOuputFiles.mkdirs();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(MarkdownPage.markdown_header(inputRootFolder.getName(),inputRootFolder.getName()));
+		sb.append(MarkdownPage.markdown_header(inputRootFolder.getName(), inputRootFolder.getName()));
 		Collections.sort(projects);
 		for (ProjectPacker p : projects)
 		{
 			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
 			System.out.println("Creating web entry for: " + name);
-			
-			//sb.append(HtmlPage.markdown_header(p.getSettings().getName()));
+
+			// sb.append(HtmlPage.markdown_header(p.getSettings().getName()));
 			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeH(3, name));
 
 			System.out.print(" table...");
-			
+
 			String rows = MarkdownPage.makeRow("Project Name:", name);
-			
+
 			rows += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());
-			
+
 			rows += MarkdownPage.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());
-		
-			String project_content = p.getSettings().getContent().replaceAll("\n","");
-			
+
+			String project_content = p.getSettings().getContent().replaceAll("\n", "");
+
 			rows += MarkdownPage.makeRow("Description:", project_content);
 
 			String pdfLink = "";
 
-			File folder = new File(logOutput,p.getSettings().getName());
+			File folder = new File(logOutput, p.getSettings().getName());
 			folder.mkdir();
 			System.out.print(" zip...");
-			File zipFile = new File(/*logOuputFiles*/folder, name + ".zip");
+			File zipFile = new File(/* logOuputFiles */folder, name + ".zip");
 			p.zipTo(zipFile);
 
-//			rows += tableRow("Download:", HtmlPage.makeLink("model", outputFolderName
-//					+ "/" + zipFile.getName())
-//					+ " " + pdfLink);
-			
-			
-			rows += MarkdownPage.makeRow("Download:", HtmlPage.makeLink("model", /*outputFolderName*/p.getSettings().getName()
+			// rows += tableRow("Download:", HtmlPage.makeLink("model", outputFolderName
+			// + "/" + zipFile.getName())
+			// + " " + pdfLink);
+
+			rows += MarkdownPage.makeRow("Download:", HtmlPage.makeLink("model", /* outputFolderName */p.getSettings().getName()
 					+ "/" + zipFile.getName())
 					+ " " + pdfLink);
-			
 
 			sb.append(HtmlTable.makeTable(rows));
 			System.out.print("\n");
-			
 
 		}
 
 		String page = sb.toString();
-		
+
 		if (!overtureCSSWeb)
 		{
 			FileUtils.writeFile(page, new File(logOutput, "index.md"));
 		} else
 		{
-			
 
 			// overturetool
 			String pageSection = sb.toString().replaceAll("href=\"", "href=\""
-							+ HtmlPage.overtureExamplesPreLink);
-			
+					+ HtmlPage.overtureExamplesPreLink);
+
 			FileUtils.writeFile(pageSection, new File(logOutput, "index.md"));
 		}
 
@@ -233,12 +244,12 @@ public class Controller_fault
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(MarkdownPage.markdown_header("Web Overview Page", "default"));
-		sb.append(HtmlPage.makeH(1,"Overture Examples"));
+		sb.append(HtmlPage.makeH(1, "Overture Examples"));
 
 		for (Controller controller : controllers)
 		{
 			sb.append(HtmlPage.makeH(2, controller.getName()));
-			
+
 			sb.append(HtmlPage.makeLink("--root--", controller.getName()));
 			sb.append(HtmlPage.makeBr());
 			sb.append(HtmlPage.makeLink("--web--", controller.getName()
@@ -256,18 +267,18 @@ public class Controller_fault
 			sb.append(HtmlPage.makeLink(file.getName(), file.getName()));
 			sb.append(HtmlPage.makeBr());
 		}
-		
-		
+
 		String page = sb.toString();
-		
+
 		if (overtureCSSWeb)
 		{
 			// overturetool
-						page = sb.toString();/*.replaceAll("href=\"", "href=\""
-										+ HtmlPage.overtureExamplesPreLink), "examples");*/
-		}else
+			page = sb.toString();/*
+								 * .replaceAll("href=\"", "href=\"" + HtmlPage.overtureExamplesPreLink), "examples");
+								 */
+		} else
 		{
-			
+
 		}
 		FileUtils.writeFile(page, new File(webDir, "index.md"));
 

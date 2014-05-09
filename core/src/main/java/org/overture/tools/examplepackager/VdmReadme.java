@@ -79,7 +79,9 @@ public class VdmReadme
 		this.name = name;
 		this.dialect = dialect;
 		if (autoInitialize)
+		{
 			initialize();
+		}
 	}
 
 	public void initialize()
@@ -95,9 +97,13 @@ public class VdmReadme
 				while ((line = input.readLine()) != null)
 				{
 					if (line.startsWith("#") && line.contains("="))
+					{
 						processLine(line.substring(1).trim());
+					}
 					if (!line.startsWith("#"))
+					{
 						sb.append("\n" + line);
+					}
 				}
 				content = sb.toString();
 			} finally
@@ -110,7 +116,9 @@ public class VdmReadme
 		}
 
 		if (!settingsParsed)
+		{
 			appendReadme();
+		}
 
 	}
 
@@ -121,33 +129,48 @@ public class VdmReadme
 		{
 			settingsParsed = true;
 			if (data[0].equals(LANGUAGE_VERSION))
+			{
 				setLanguageVersion(Release.lookup(data[1]));
-			else if (data[0].equals(INV_CHECKS))
+			} else if (data[0].equals(INV_CHECKS))
+			{
 				setInvChecks(new Boolean(data[1]));
-			else if (data[0].equals(POST_CHECKS))
+			} else if (data[0].equals(POST_CHECKS))
+			{
 				setPostChecks(new Boolean(data[1]));
-			else if (data[0].equals(PRE_CHECKS))
+			} else if (data[0].equals(PRE_CHECKS))
+			{
 				setPreChecks(new Boolean(data[1]));
-			else if (data[0].equals(DYNAMIC_TYPE_CHECKS))
+			} else if (data[0].equals(DYNAMIC_TYPE_CHECKS))
+			{
 				setDynamicTypeChecks(new Boolean(data[1]));
-			else if (data[0].equals(SUPPRESS_WARNINGS))
+			} else if (data[0].equals(SUPPRESS_WARNINGS))
+			{
 				setSuppressWarnings(new Boolean(data[1]));
-			else if (data[0].equals(ENTRY_POINT))
+			} else if (data[0].equals(ENTRY_POINT))
+			{
 				setEntryPoint(data[1].trim());
-			else if (data[0].equals(EXPECTED_RESULT))
+			} else if (data[0].equals(EXPECTED_RESULT))
+			{
 				setExpectedResult(ResultStatus.valueOf(data[1]));
-			else if (data[0].equals(TEX_DOCUMENT))
+			} else if (data[0].equals(TEX_DOCUMENT))
+			{
 				setTexDocument(data[1].trim());
-			else if (data[0].equals(TEX_AUTHOR))
+			} else if (data[0].equals(TEX_AUTHOR))
+			{
 				setTexAuthor(data[1].trim());
-			else if (data[0].equals(ENCODING))
+			} else if (data[0].equals(ENCODING))
+			{
 				setEncoding(data[1].trim());
-			else if (data[0].equals(LIB))
+			} else if (data[0].equals(LIB))
+			{
 				setLibs(fixSemiSplit(data[1]));
-			else if (data[0].equals(VM_ARGUMENTS))
+			} else if (data[0].equals(VM_ARGUMENTS))
+			{
 				setVmArguments(fixSemiSplit(data[1]));
-			else if (data[0].equals(REALTIME_TIME_INV_CHECKS))
+			} else if (data[0].equals(REALTIME_TIME_INV_CHECKS))
+			{
 				setRealTimeInvChecks(new Boolean(data[1]));
+			}
 		}
 	}
 
@@ -179,7 +202,9 @@ public class VdmReadme
 	public void writeSettings(File outputFolder)
 	{
 		if (getEncoding() == null || getEncoding().isEmpty())
+		{
 			return;
+		}
 
 		File settingsFolder = new File(outputFolder, ".settings");
 		settingsFolder.mkdirs();
@@ -240,8 +265,9 @@ public class VdmReadme
 	public String getReadmeContent()
 	{
 		StringBuilder sb = new StringBuilder();
-		
-		sb.append("Author: " + (texAuthor==null?"Overture":texAuthor)+"\n\n");
+
+		sb.append("Author: " + (texAuthor == null ? "Overture" : texAuthor)
+				+ "\n\n");
 
 		sb.append(content);
 
@@ -301,9 +327,12 @@ public class VdmReadme
 				while ((line = input.readLine()) != null)
 				{
 					if (line.startsWith("#") && line.contains("="))
+					{
 						continue;
-					else
+					} else
+					{
 						sb.append("\n" + line);
+					}
 				}
 			} finally
 			{
@@ -328,7 +357,9 @@ public class VdmReadme
 		Boolean staticAccess = false;
 
 		if (entryPoints.isEmpty())
+		{
 			return;
+		}
 
 		String entryPoint = entryPoints.get(0);
 
@@ -405,7 +436,9 @@ public class VdmReadme
 			String vmArgsStr = "";
 
 			for (int i = 0; i < vmArguments.size(); i++)
+			{
 				vmArgsStr += " -" + vmArguments.get(i);
+			}
 
 			vmArgsStr = vmArgsStr.trim();
 
@@ -440,10 +473,12 @@ public class VdmReadme
 		sb.append("\n#" + SUPPRESS_WARNINGS + "=" + suppressWarnings);
 		// sb.append("\n#"+ENTRY_POINT+"="+entryPoints);
 		if (getEntryPoints().size() > 0)
+		{
 			for (String entrypoint : entryPoints)
 			{
 				sb.append("\n#" + ENTRY_POINT + "=" + entrypoint);
 			}
+		}
 		sb.append("\n#" + EXPECTED_RESULT + "=" + expectedResult);
 		sb.append("\n#" + ENCODING + "=" + encoding);
 
@@ -452,7 +487,9 @@ public class VdmReadme
 		for (int i = 0; i < libs.size(); i++)
 		{
 			if (i != 0)
+			{
 				sb.append(";");
+			}
 			sb.append(libs.get(i).substring(0, libs.get(i).indexOf('.')));
 		}
 		sb.append("\n#" + TEX_AUTHOR + "=" + texAuthor);
@@ -625,7 +662,9 @@ public class VdmReadme
 		for (String lib : argumentLibs)
 		{
 			if (lib.trim().length() > 0)
+			{
 				this.libs.add(lib.trim() + "." + getSpecFileExtension());
+			}
 		}
 
 	}
@@ -640,7 +679,9 @@ public class VdmReadme
 		for (String arg : argumentLibs)
 		{
 			if (arg.trim().length() > 0)
+			{
 				this.vmArguments.add(arg.trim());
+			}
 		}
 
 	}

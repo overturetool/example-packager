@@ -33,7 +33,7 @@ import org.overture.tools.examplepackager.util.FolderZipper;
 
 public class ProjectPacker implements Comparable<ProjectPacker>
 {
-	static final String VDM_README_FILENAME = "README.txt";
+	public static final String VDM_README_FILENAME = "README.txt";
 	File root;
 	VdmReadme settings = null;
 	Dialect dialect = Dialect.VDM_PP;
@@ -79,7 +79,9 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 		}
 
 		if (verbose)
+		{
 			System.out.println("Writing project: " + settings.getName());
+		}
 
 		outputLocation.mkdirs();
 
@@ -161,9 +163,12 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 			if (f.isFile() && f.getName().toLowerCase().endsWith(".vdmpp")
 					|| f.getName().toLowerCase().endsWith(".vdmrt")
 					|| f.getName().toLowerCase().endsWith(".vdmsl"))
+			{
 				specFiles.add(f);
-			else if (f.isDirectory())
+			} else if (f.isDirectory())
+			{
 				specFiles.addAll(getSpecFiles(f));
+			}
 		}
 		return specFiles;
 	}
@@ -193,14 +198,18 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 					|| file.getName().equals(".classpath")
 					|| file.getName().equals(".DS_Store")
 					|| file.getName().endsWith(".result"))
+			{
 				continue;
+			}
 			if (file.isFile())
 			{
 				String fileName = new File(destination, file.getName()).getAbsolutePath();
 
 				if (file.getName().endsWith("vpp")
 						|| file.getName().endsWith("vdm"))
+				{
 					fileName = createNewFileName(destination, file, dialect);
+				}
 				copyfile(file.getAbsolutePath(), fileName);
 			} else
 			{

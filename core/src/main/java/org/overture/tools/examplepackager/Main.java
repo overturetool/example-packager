@@ -66,9 +66,8 @@ public class Main
 		Option inputOpt = new Option("i", "input", true, "the path of the examples folder");
 		inputOpt.setRequired(true);
 		Option outputOpt = new Option("o", "output", true, "the path to where output files are written");
-		Option genMarkDown = new Option("m","markdown",false,"generate markdown");
-		Option markdownOutput = new Option("M", "markdownOutput",true, "the path to where outfile in markdown would be written");
-		
+		Option genMarkDown = new Option("m", "markdown", false, "generate markdown");
+		Option markdownOutput = new Option("M", "markdownOutput", true, "the path to where outfile in markdown would be written");
 
 		options.addOption(helpOpt);
 		options.addOption(genWebOpt);
@@ -78,7 +77,6 @@ public class Main
 		options.addOption(inputOpt);
 		options.addOption(outputOpt);
 		options.addOption(markdownOutput);
-		
 
 		CommandLine line = null;
 		try
@@ -107,14 +105,14 @@ public class Main
 		{
 			output = new File(line.getOptionValue(outputOpt.getOpt()));
 		}
-		
+
 		if (line.hasOption(markdownOutput.getOpt()))
 		{
 			markdownfolder = new File(line.getOptionValue(markdownOutput.getOpt()));
 		}
 
 		web = line.hasOption(genWebOpt.getOpt());
-		overtureCSSWeb= line.hasOption(overtureCssWebOpt.getOpt());
+		overtureCSSWeb = line.hasOption(overtureCssWebOpt.getOpt());
 		zip = line.hasOption(genZipbundleOpt.getOpt());
 
 		runCompleteTest(input);
@@ -149,7 +147,9 @@ public class Main
 	public static void runCompleteTest(File root) throws Exception
 	{
 		if (!root.getName().toLowerCase().equals("examples"))
+		{
 			throw new Exception("Illegal root");
+		}
 
 		File tmpFolder = new File("tmp");
 
@@ -168,9 +168,9 @@ public class Main
 
 		if (web)
 		{
-			controller.createWebOverviewPage(controllers, zipFiles,overtureCSSWeb);
+			controller.createWebOverviewPage(controllers, zipFiles, overtureCSSWeb);
 		}
-		if(markdown)
+		if (markdown)
 		{
 			controller.createWebSite(markdown);
 		}
@@ -178,7 +178,7 @@ public class Main
 
 		System.out.println("Done.");
 
-//		System.exit(0);
+		// System.exit(0);
 
 	}
 }

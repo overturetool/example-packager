@@ -19,9 +19,6 @@
 package org.overture.tools.examplepackager;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,21 +40,22 @@ public class Controller
 	public final File webDir;// = new File("Web");
 	public File markdownDir;
 
-	public Controller(Dialect dialect, File inputRootFolder, File output, File markdownOutput)
+	public Controller(Dialect dialect, File inputRootFolder, File output,
+			File markdownOutput)
 	{
-		this(dialect,inputRootFolder,output);
+		this(dialect, inputRootFolder, output);
 		this.markdownDir = new File(markdownOutput, "markdown");
 	}
-	
+
 	public Controller(Dialect dialect, File inputRootFolder, File output)
 	{
 		this.dialect = dialect;
 		this.inputRootFolder = inputRootFolder;
 		this.webDir = new File(output, "Web");
-		
+
 	}
-	
-	public Controller(Dialect dialect, File inputRootFolder, File output, 
+
+	public Controller(Dialect dialect, File inputRootFolder, File output,
 			boolean verbose)
 	{
 		this(dialect, inputRootFolder, output);
@@ -75,7 +73,9 @@ public class Controller
 		System.out.println("|                                                                              |");
 		text = "| " + text;
 		while (text.length() < 79)
+		{
 			text += " ";
+		}
 		text += "|";
 
 		System.out.println(text);
@@ -87,7 +87,9 @@ public class Controller
 		System.out.println("--------------------------------------------------------------------------------");
 		text = "| " + text;
 		while (text.length() < 79)
+		{
 			text += " ";
+		}
 		text += "|";
 
 		System.out.println(text);
@@ -102,12 +104,16 @@ public class Controller
 		}
 
 		if (verbose)
+		{
 			printSubHeading("PACKING: " + inputRootFolder.getName());
+		}
 		for (File exampleFolder : inputRootFolder.listFiles())
 		{
 			if (!exampleFolder.isDirectory()
 					|| exampleFolder.getName().equals(".svn"))
+			{
 				continue;
+			}
 
 			ProjectPacker p = new ProjectPacker(exampleFolder, dialect, verbose);
 			if (!dryrun)
@@ -119,12 +125,16 @@ public class Controller
 		if (!dryrun)
 		{
 			if (zipName.exists())
+			{
 				zipName.delete();
+			}
 
 			FolderZipper.zipFolder(outputFolder.getAbsolutePath(), zipName.getAbsolutePath());
 			if (verbose)
+			{
 				printSubHeading("Folder zipped: ".toUpperCase()
 						+ zipName.getName());
+			}
 		}
 
 	}
@@ -134,8 +144,9 @@ public class Controller
 		try
 		{
 			if (tmpFolder != null && tmpFolder.isFile() && tmpFolder.exists())
+			{
 				tmpFolder.delete();
-			else if (tmpFolder.exists())
+			} else if (tmpFolder.exists())
 			{
 				for (File file : tmpFolder.listFiles())
 				{
@@ -148,8 +159,10 @@ public class Controller
 			System.err.println("\nFaild to deleting: " + tmpFolder);
 		}
 		if (tmpFolder.exists())
+		{
 			System.err.println("\nFaild to deleting - file not closed: "
 					+ tmpFolder);
+		}
 	}
 
 	public Integer count = 0;
@@ -162,39 +175,39 @@ public class Controller
 	{
 		int i = 0;
 		webDir.mkdirs();
-		//markdownDir.mkdirs();
+		// markdownDir.mkdirs();
 		printSubHeading("Producing website".toUpperCase());
 
 		File logOutput = new File(webDir, inputRootFolder.getName());
 		logOutput.mkdirs();
 
-		File logOuputFiles = new File(logOutput, /*outputFolderName*/"markdown");
-		logOuputFiles.mkdirs();
+		// File logOuputFiles = new File(logOutput, /* outputFolderName */"markdown");
+		// logOuputFiles.mkdirs();
 
 		StringBuilder sb = new StringBuilder();
 		StringBuilder md = new StringBuilder();
-		
+
 		md.append(MarkdownPage.markdown_header(inputRootFolder.getName(), inputRootFolder.getName()));
-		
+
 		Collections.sort(projects);
 		for (ProjectPacker p : projects)
 		{
-			
+
 			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
 			System.out.println("Creating web entry for: " + name);
-			
-			//Markdown Page build
+
+			// Markdown Page build
 			md.append(MarkdownPage.makeBr());
 			md.append(MarkdownPage.makeH(3, name));
-			
-			String rowsmarkdown = MarkdownPage.makeRow("Project Name:", name);
-			rowsmarkdown += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());			
-			rowsmarkdown += MarkdownPage.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());		
-			String project_content = p.getSettings().getContent().replaceAll("\n","");			
+
+			String rowsmarkdown = "";// MarkdownPage.makeRow("Project Name:", name);
+			rowsmarkdown += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());
+			rowsmarkdown += MarkdownPage.makeRow("Language Version:", p.getSettings().getLanguageVersion().toString());
+			String project_content = p.getSettings().getContent().replaceAll("\n", "");
 			rowsmarkdown += MarkdownPage.makeRow("Description:", project_content);
-			
-			//html Page build
+
+			// html Page build
 			sb.append(HtmlPage.makeH(3, name));
 			System.out.print(" table...");
 			String rows = tableRow("Project Name:", name);
@@ -204,47 +217,45 @@ public class Controller
 			rows += tableRow("Description:", p.getSettings().getContent());
 
 			String pdfLink = "";
-			
-			//Making each project in to separate folder.
-			
-			File folder = new File(logOutput,p.getSettings().getName());
+
+			// Making each project in to separate folder.
+
+			File folder = new File(logOutput, p.getSettings().getName());
 			folder.mkdir();
 
 			System.out.print(" zip...");
-			File zipFile = new File(/*logOuputFiles*/folder, name + ".zip");
+			File zipFile = new File(/* logOuputFiles */folder, name + ".zip");
 			p.zipTo(zipFile);
 
-			rows += tableRow("Download:", HtmlPage.makeLink("model", /*outputFolderName*/p.getSettings().getName()
+			rows += tableRow("Download:", HtmlPage.makeLink("model", /* outputFolderName */p.getSettings().getName()
 					+ "/" + zipFile.getName())
 					+ " " + pdfLink);
-			
-			rowsmarkdown += MarkdownPage.makeRow("Download:", HtmlPage.makeLink("model", /*outputFolderName*/"../" + p.getSettings().getName()
-					+ "/" + zipFile.getName())
+
+			rowsmarkdown += MarkdownPage.makeRow("Download:", HtmlPage.makeLink("model", /* outputFolderName */"../"
+					+ p.getSettings().getName() + "/" + zipFile.getName())
 					+ " " + pdfLink);
-			
 
 			md.append(MarkdownPage.makeTable(rowsmarkdown));
 			sb.append(HtmlTable.makeTable(rows));
 			System.out.print("\n");
-			
-			//Creating the overall file.
+
+			// Creating the overall file.
 			overallMarkdownFile(i, folder);
 			i++;
-		
-			
+
 		}
 
-		String markdownpage = md.toString();
-		
+		// String markdownpage = md.toString();
+
 		String page = HtmlPage.makePage(HtmlPage.makeH1(inputRootFolder.getName()
 				+ ": Examples")
 				+ sb.toString());
 		if (!overtureCSSWeb)
 		{
-			//Html page
+			// Html page
 			FileUtils.writeFile(page, new File(logOutput, "index.html"));
-			//Markdown page
-			FileUtils.writeFile(markdownpage, new File(logOuputFiles,"index.md"));
+			// Markdown page
+			// FileUtils.writeFile(markdownpage, new File(logOuputFiles, "index.md"));
 		} else
 		{
 			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(logOutput, "style.css"));
@@ -255,94 +266,164 @@ public class Controller
 					+ HtmlPage.makeDiv(sb.toString().replaceAll("href=\"", "href=\""
 							+ HtmlPage.overtureExamplesPreLink), "examples");
 			FileUtils.writeFile(pageSection, new File(logOutput, "index.html"));
-			
-			//markdown page.
-			FileUtils.writeFile(markdownpage, new File(logOuputFiles,"index.md"));
+
+			// markdown page.
+			// FileUtils.writeFile(markdownpage, new File(logOuputFiles, "index.md"));
 		}
 
 	}
-	
-	public List<String> listFilesForFolder(final File folder) {
-		List<String> file = new ArrayList<String>();
-		for (final File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry);
-	        } else {
-	           // System.out.println(fileEntry.getName());
-	        	file.add(fileEntry.getName()); 
-	        }
-	    }
-		
-	    return file;	
-	}
-	
-	public void overallMarkdownFile(int i, File folder)
-	{		
-		StringBuilder sumString = new StringBuilder();
-		
-		
-		File folders = new File(inputRootFolder,"");
-		
-		
-		if(folders.isDirectory())
+
+	public void createMdSite()
+	{
+		int i = 0;
+		webDir.mkdirs();
+		// markdownDir.mkdirs();
+		printSubHeading("Producing MD site".toUpperCase());
+
+		File logOutput = new File(webDir, inputRootFolder.getName());
+		logOutput.mkdirs();
+
+		StringBuilder md = new StringBuilder();
+
+		md.append(MarkdownPage.markdown_header(inputRootFolder.getName(), "default"));
+
+		Collections.sort(projects);
+		for (ProjectPacker p : projects)
 		{
-			
-			File[] subfolders = folders.listFiles();
-		
-			ArrayList<String> sorting = new ArrayList<String>();
-			
-			for(File x:subfolders)
+
+			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
+			name = name.substring(0, 1).toUpperCase() + name.substring(1);
+			System.out.println("Creating web entry for: " + name);
+
+			// Markdown Page build
+			md.append(MarkdownPage.makeBr());
+			md.append(MarkdownPage.makeH(3, name));
+
+			String rowsmarkdown = "";// MarkdownPage.makeRow("Project Name:", name);
+			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Author:"), p.getSettings().getTexAuthor());
+			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Version:"),p.getDialect().name()+" - "+ p.getSettings().getLanguageVersion().toString());
+			String project_content = p.getSettings().getContent().replaceAll("\n", "");
+			rowsmarkdown += MarkdownPage.makeRow("", project_content);
+
+			// html Page build
+			System.out.print(" table...");
+
+			String pdfLink = "";
+
+			// Making each project in to separate folder.
+
+			File folder = new File(logOutput, p.getSettings().getName());
+			folder.mkdir();
+
+			System.out.print(" zip...");
+			File zipFile = new File(/* logOuputFiles */folder, name + ".zip");
+			p.zipTo(zipFile);
+
+			final String relativeProjectUrl = p.getSettings().getName() + "/";
+			rowsmarkdown += MarkdownPage.makeRow("", HtmlPage.makeLink("model (zip)", /* outputFolderName */
+					relativeProjectUrl + zipFile.getName())
+					+ " "
+					+ pdfLink
+					+ " / "
+					+ HtmlPage.makeLink("show specification", relativeProjectUrl
+							+ "index.html"));
+
+			md.append(MarkdownPage.makeTable(rowsmarkdown));
+			md.append(MarkdownPage.makeBr());
+			System.out.print("\n");
+
+			// Creating the overall file.
+			overallMarkdownFile(i, folder);
+			i++;
+
+		}
+
+		String markdownpage = md.toString();
+
+		// markdown page.
+		FileUtils.writeFile(markdownpage, new File(logOutput, "index.md"));
+
+	}
+
+	public List<File> listFilesForFolder(final File folder)
+	{
+		List<File> file = new ArrayList<File>();
+		for (final File fileEntry : folder.listFiles())
+		{
+			if (fileEntry.isDirectory())
 			{
-				
+				listFilesForFolder(fileEntry);
+			} else
+			{
+				// System.out.println(fileEntry.getName());
+				file.add(fileEntry);
+			}
+		}
+
+		return file;
+	}
+
+	public void overallMarkdownFile(int index, File folder)
+	{
+		StringBuilder sumString = new StringBuilder();
+
+		File folders = new File(inputRootFolder, "");
+
+		if (folders.isDirectory())
+		{
+
+			File[] subfolders = folders.listFiles();
+
+			ArrayList<String> sorting = new ArrayList<String>();
+
+			for (File x : subfolders)
+			{
 				sorting.add(x.toString());
 			}
-			Collections.sort(sorting,sorting.toString().CASE_INSENSITIVE_ORDER);
-			
-			if (i <= subfolders.length)
+
+			Collections.sort(sorting, String.CASE_INSENSITIVE_ORDER);
+
+			if (index <= subfolders.length)
 			{
-				File filelister = new File(sorting.get(i),"");
-				sumString.append(MarkdownPage.markdown_header(filelister.getName(), "listing"));
+				File filelister = new File(sorting.get(index), "");
+				sumString.append(MarkdownPage.markdown_header(filelister.getName(), "default"));
 				sumString.append(MarkdownPage.makeBr());
-				sumString.append(MarkdownPage.makeH(1, inputRootFolder.getName()));
-				sumString.append(MarkdownPage.makeBr());
-				
-				sumString.append(MarkdownPage.makeH(2,sorting.get(i).toString()));
-				sumString.append(MarkdownPage.makeBr());
-				
-				List<String> files = listFilesForFolder(filelister);
-				for(String context:files)
+
+				List<File> files = listFilesForFolder(filelister);
+
+				// TODO where is the project we need it for correct readme display
+				for (File context : files)
 				{
-					sumString.append(MarkdownPage.makeBr());
-					sumString.append(MarkdownPage.makeH(3, context));
-					sumString.append(MarkdownPage.makeBr());
-					File contextf = new File(sorting.get(i).toString(),context);
-					sumString.append("```");
-					sumString.append(MarkdownPage.makeBr());
-					try {
-						FileInputStream streamIn = new FileInputStream(contextf);
-						int c;
-				         while ((c = streamIn.read()) != -1) 
-				         {
-				            sumString.append((char) c);
-				         }
-				         streamIn.close();
-					} catch (FileNotFoundException e) {
-						System.err.println("File read failed: " + e);
-					} catch (IOException e) {
-						System.err.println("File read failed: " + e);
+					if (context.getName().equals(ProjectPacker.VDM_README_FILENAME))
+					{
+						sumString.append(MarkdownPage.makeCodeBlock(FileUtils.readFile(context)));
 					}
-					sumString.append(MarkdownPage.makeBr());
-					sumString.append("```");
-					
-					
 				}
-				
-				
+
+				for (File specFile : files)
+				{
+					if (specFile.getName().equals(ProjectPacker.VDM_README_FILENAME))
+					{
+						continue;
+					}
+
+					if (specFile.getName().endsWith(".vdmsl")
+							|| specFile.getName().endsWith(".vdmpp")
+							|| specFile.getName().endsWith(".vdmrt"))
+					{
+
+						sumString.append(MarkdownPage.makeBr());
+						sumString.append(MarkdownPage.makeH(3, specFile.getName()));
+						sumString.append(MarkdownPage.makeBr());
+						sumString.append(MarkdownPage.disableLiquid(MarkdownPage.makeCodeBlock(FileUtils.readFile(specFile))));
+					}
+				}
+
 			}
-			
-				sumString.append(MarkdownPage.makeBr());
-				FileUtils.writeFile(sumString.toString(), new File(folder,"overall.md"));
-		}		
+
+			sumString.append(MarkdownPage.makeBr());
+			FileUtils.writeFile(sumString.toString(), new File(folder, "index.md"));
+		}
 	}
 
 	private String tableRow(String... cells)
@@ -360,7 +441,7 @@ public class Controller
 
 		StringBuilder sb = new StringBuilder();
 		StringBuilder md = new StringBuilder();
-		
+
 		md.append(MarkdownPage.markdown_header("Overture Examples", "default"));
 		md.append(MarkdownPage.makeH(1, "Overture Examples"));
 
@@ -373,62 +454,62 @@ public class Controller
 			md.append(MarkdownPage.makeH(2, controller.getName()));
 			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeLink("--root--", controller.getName()));
-			md.append(MarkdownPage.makeLink("--root--", "../"+controller.getName()));
-			//md.append(MarkdownPage.makeBr());
+			md.append(MarkdownPage.makeLink("--root--", "../"
+					+ controller.getName()));
+			// md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeBr());
 			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeLink("--web--", controller.getName()
 					+ "/index.html"));
-			md.append(HtmlPage.makeLink("--web--", "../"+controller.getName()
+			md.append(HtmlPage.makeLink("--web--", "../" + controller.getName()
 					+ "/index.html"));
 		}
 
 		sb.append(HtmlPage.makeBr());
 		sb.append(HtmlPage.makeBr());
-		
+
 		md.append(MarkdownPage.makeBr());
 		md.append(MarkdownPage.makeBr());
-		
 
 		sb.append(HtmlPage.makeH(2, "Download example collections"));
-		
+
 		md.append(MarkdownPage.makeH(2, "Download example collections"));
 		for (File file : zipFiles)
 		{
 			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeLink(file.getName(), file.getName()));
-			md.append(MarkdownPage.makeLink(file.getName(), "../"+file.getName()));
+			md.append(MarkdownPage.makeLink(file.getName(), "../"
+					+ file.getName()));
 			md.append(MarkdownPage.makeBr());
 			sb.append(HtmlPage.makeBr());
 		}
 
 		String page = HtmlPage.makePage(sb.toString());
-		
+
 		String markdownpage = md.toString();
 		if (overtureCSSWeb)
 		{
 			// overturetool - hteml page
-						page= HtmlPage.makeOvertureStyleCss()
-								+ "\n"
-								+ HtmlPage.makeDiv(sb.toString()/*.replaceAll("href=\"", "href=\""
-										+ HtmlPage.overtureExamplesPreLink)*/, "examples");
-			
-			
+			page = HtmlPage.makeOvertureStyleCss() + "\n"
+					+ HtmlPage.makeDiv(sb.toString()/*
+													 * .replaceAll("href=\"", "href=\"" +
+													 * HtmlPage.overtureExamplesPreLink)
+													 */, "examples");
+
 			FileUtils.writeFile(HtmlPage.makeStyleCss(), new File(webDir, "style.css"));
-			
-			
-		}else
+
+		} else
 		{
-			
+
 		}
-		//Html
+		// Html
 		FileUtils.writeFile(page, new File(webDir, "index.html"));
-		//markdown
+		// markdown
 		if (!overtureCSSWeb)
 		{
-			File mdfolder = new File(webDir,"markdown");
+			File mdfolder = new File(webDir, "markdown");
 			mdfolder.mkdirs();
-			FileUtils.writeFile(markdownpage,new File(mdfolder, "index.md"));
+			FileUtils.writeFile(markdownpage, new File(mdfolder, "index.md"));
 		}
 		//
 

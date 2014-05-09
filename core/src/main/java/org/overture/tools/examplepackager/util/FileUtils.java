@@ -21,12 +21,16 @@ package org.overture.tools.examplepackager.util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class FileUtils
 {
@@ -55,9 +59,13 @@ public class FileUtils
 			try
 			{
 				if (br != null)
+				{
 					br.close();
+				}
 				if (is != null)
+				{
 					is.close();
+				}
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -72,6 +80,89 @@ public class FileUtils
 		for (String s : FileUtils.readTextFromJar(relativePath))
 		{
 			sb.append("\n" + s);
+		}
+		return sb.toString();
+	}
+
+	public static boolean detectLatexEnv(InputStream input, String env)
+	{
+		Scanner s = new Scanner(input);
+		try
+		{
+
+			// latex \begin{cml}
+			// regex \\begin\{cml\}
+			// java \\\\begin\\{cml\\}
+			if (s.findWithinHorizon("\\\\begin\\{" + env + "\\}", 0) != null)
+			{
+				return true;
+			}
+
+		} finally
+		{
+			s.close();
+		}
+		return false;
+	}
+
+	public static InputStream chooseStream(File file, String env,
+			InputStream inStream) throws FileNotFoundException
+	{
+		InputStream in = new FileInputStream(file);
+		if (detectLatexEnv(in, env))
+		{
+			return new LatexCmlEnvInputStream(new FileInputStream(file), env);
+		}
+
+		if (inStream == null)
+		{
+			return new FileInputStream(file);
+		}
+		return inStream;
+
+	}
+
+	public static String readFile(File file)
+	{
+		StringBuilder sb = new StringBuilder();
+		try
+		{
+			InputStream streamIn = chooseStream(file, "vdm_al",null);
+			streamIn = chooseStream(file, "vdmsl",streamIn);
+			streamIn = chooseStream(file, "vdmpp",streamIn);
+			streamIn = chooseStream(file, "vdmrt",streamIn);
+			//
+			// streamIn =new LatexCmlEnvInputStream(streamIn,"vdm_al");
+
+			int c;
+			while ((c = streamIn.read()) != -1)
+			{
+				sb.append((char) c);
+			}
+			streamIn.close();
+
+			if (sb.toString().contains("\n"))
+			{
+
+				String trimmed = "";
+				for (String line : sb.toString().split("\n"))
+				{
+					if (line.trim().isEmpty())
+					{
+						trimmed += "\n";
+					} else
+					{
+						trimmed += line;
+					}
+				}
+				return trimmed;
+			}
+		} catch (FileNotFoundException e)
+		{
+			System.err.println("File read failed: " + e);
+		} catch (IOException e)
+		{
+			System.err.println("File read failed: " + e);
 		}
 		return sb.toString();
 	}
@@ -106,13 +197,15 @@ public class FileUtils
 		BufferedWriter outputStream = null;
 		try
 		{
-			FileWriter outputFileReader = new FileWriter(file, append);
-			outputStream = new BufferedWriter(outputFileReader);
+			// FileWriter outputFileReader = new FileWriter(file, append);
+			// FileOutputStream output = new
+			OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file, append), "UTF-8");
+			// outputStream = new BufferedWriter(outputFileReader);
 
-			outputStream.write(data);
+			out.write(data);
 
-			outputStream.flush();
-			outputStream.close();
+			out.flush();
+			out.close();
 
 		} catch (IOException e)
 		{
