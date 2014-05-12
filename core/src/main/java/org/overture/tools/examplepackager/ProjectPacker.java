@@ -262,4 +262,9 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 		return this.getSettings().getName().toLowerCase().compareTo(o.getSettings().getName().toLowerCase());
 	}
 
+	public File getRoot()
+	{
+		return this.root;
+	}
+
 }

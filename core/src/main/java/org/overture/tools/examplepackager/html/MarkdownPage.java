@@ -75,11 +75,9 @@ public class MarkdownPage
 	public static String makeCodeBlock(String code)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("~~~");
-		sb.append(makeBr());
+		sb.append("~~~\n");
 		sb.append(code);
-		sb.append(MarkdownPage.makeBr());
-		sb.append("~~~");
+		sb.append("\n~~~\n");
 		return sb.toString();
 	}
 

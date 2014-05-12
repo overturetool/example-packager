@@ -173,7 +173,6 @@ public class Controller
 
 	public void createWebSite(boolean overtureCSSWeb)
 	{
-		int i = 0;
 		webDir.mkdirs();
 		// markdownDir.mkdirs();
 		printSubHeading("Producing website".toUpperCase());
@@ -240,8 +239,7 @@ public class Controller
 			System.out.print("\n");
 
 			// Creating the overall file.
-			overallMarkdownFile(i, folder);
-			i++;
+			overallMarkdownFile(p, folder);
 
 		}
 
@@ -275,7 +273,6 @@ public class Controller
 
 	public void createMdSite()
 	{
-		int i = 0;
 		webDir.mkdirs();
 		// markdownDir.mkdirs();
 		printSubHeading("Producing MD site".toUpperCase());
@@ -301,7 +298,8 @@ public class Controller
 
 			String rowsmarkdown = "";// MarkdownPage.makeRow("Project Name:", name);
 			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Author:"), p.getSettings().getTexAuthor());
-			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Version:"),p.getDialect().name()+" - "+ p.getSettings().getLanguageVersion().toString());
+			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Version:"), p.getDialect().name()
+					+ " - " + p.getSettings().getLanguageVersion().toString());
 			String project_content = p.getSettings().getContent().replaceAll("\n", "");
 			rowsmarkdown += MarkdownPage.makeRow("", project_content);
 
@@ -333,8 +331,7 @@ public class Controller
 			System.out.print("\n");
 
 			// Creating the overall file.
-			overallMarkdownFile(i, folder);
-			i++;
+			overallMarkdownFile(p, folder);
 
 		}
 
@@ -363,62 +360,44 @@ public class Controller
 		return file;
 	}
 
-	public void overallMarkdownFile(int index, File folder)
+	public void overallMarkdownFile(ProjectPacker p, File folder)
 	{
 		StringBuilder sumString = new StringBuilder();
-
 		File folders = new File(inputRootFolder, "");
 
 		if (folders.isDirectory())
 		{
+			sumString.append(MarkdownPage.markdown_header(p.getSettings().getName(), "default"));
+			sumString.append(MarkdownPage.makeBr());
 
-			File[] subfolders = folders.listFiles();
+			sumString.append(MarkdownPage.makeH(2, p.getSettings().getName()));
+			
+			sumString.append("Author: "
+					+ (p.getSettings().getTexAuthor() == null ? "Overture"
+							: p.getSettings().getTexAuthor()) + "\n\n");
 
-			ArrayList<String> sorting = new ArrayList<String>();
+			sumString.append(p.getSettings().getContent());
 
-			for (File x : subfolders)
+			sumString.append("\n\n| Properties | Values          |\n| :------------ | :---------- |\n");
+			sumString.append("|Language Version:| "
+					+ p.getSettings().getLanguageVersion() + "|\n");
+			if (p.getSettings().getEntryPoints().size() > 0)
 			{
-				sorting.add(x.toString());
+				for (String entrypoint : p.getSettings().getEntryPoints())
+				{
+					sumString.append("|Entry point     :| " + entrypoint+"|\n");
+				}
 			}
 
-			Collections.sort(sorting, String.CASE_INSENSITIVE_ORDER);
+			
+			sumString.append(MarkdownPage.makeBr());
 
-			if (index <= subfolders.length)
+			for (File specFile : p.getSpecFiles(p.getRoot()))
 			{
-				File filelister = new File(sorting.get(index), "");
-				sumString.append(MarkdownPage.markdown_header(filelister.getName(), "default"));
 				sumString.append(MarkdownPage.makeBr());
-
-				List<File> files = listFilesForFolder(filelister);
-
-				// TODO where is the project we need it for correct readme display
-				for (File context : files)
-				{
-					if (context.getName().equals(ProjectPacker.VDM_README_FILENAME))
-					{
-						sumString.append(MarkdownPage.makeCodeBlock(FileUtils.readFile(context)));
-					}
-				}
-
-				for (File specFile : files)
-				{
-					if (specFile.getName().equals(ProjectPacker.VDM_README_FILENAME))
-					{
-						continue;
-					}
-
-					if (specFile.getName().endsWith(".vdmsl")
-							|| specFile.getName().endsWith(".vdmpp")
-							|| specFile.getName().endsWith(".vdmrt"))
-					{
-
-						sumString.append(MarkdownPage.makeBr());
-						sumString.append(MarkdownPage.makeH(3, specFile.getName()));
-						sumString.append(MarkdownPage.makeBr());
-						sumString.append(MarkdownPage.disableLiquid(MarkdownPage.makeCodeBlock(FileUtils.readFile(specFile))));
-					}
-				}
-
+				sumString.append(MarkdownPage.makeH(3, specFile.getName()));
+				sumString.append(MarkdownPage.makeBr());
+				sumString.append(MarkdownPage.disableLiquid(MarkdownPage.makeCodeBlock(FileUtils.readFile(specFile))));
 			}
 
 			sumString.append(MarkdownPage.makeBr());
