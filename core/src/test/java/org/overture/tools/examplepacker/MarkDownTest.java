@@ -16,7 +16,7 @@ public class MarkDownTest
 	{
 		PackerUtil packer = new PackerUtil( F("target/generated/markdown/"), true, false, true, "", F("target/generated-resources/example-packager"), false);
 
-		packer.pack(L("C:/overture/overture_gitAST/documentation/examples/VDMSL"), Dialect.VDM_SL);
+		packer.pack(L("src/test/resources/examples/VDMSL"), Dialect.VDM_SL);
 		packer.createOverviewPages();
 	}
 
