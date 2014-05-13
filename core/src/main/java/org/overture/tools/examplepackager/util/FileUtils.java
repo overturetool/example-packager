@@ -52,7 +52,7 @@ public class FileUtils
 			}
 		} catch (Exception e)
 		{
-			System.err.println("Faild to read file from jar: \"" + s + "\"");
+			System.err.println("Failed to read file from jar: \"" + s + "\"");
 			e.printStackTrace();
 		} finally
 		{
@@ -141,22 +141,22 @@ public class FileUtils
 			}
 			streamIn.close();
 
-			if (sb.toString().contains("\n"))
-			{
+			// if (sb.toString().contains("\n"))
+			// {
 
-				String trimmed = "";
-				for (String line : sb.toString().split("\n"))
-				{
-					if (line.trim().isEmpty())
-					{
-						trimmed += "\n";
-					} else
-					{
-						trimmed += line;
-					}
-				}
-				return trimmed;
-			}
+			// 	String trimmed = "";
+			// 	for (String line : sb.toString().split("\n"))
+			// 	{
+			// 		if (line.trim().isEmpty())
+			// 		{
+			// 			trimmed += "\n";
+			// 		} else
+			// 		{
+			// 			trimmed += line;
+			// 		}
+			// 	}
+			// 	return trimmed;
+			// }
 		} catch (FileNotFoundException e)
 		{
 			System.err.println("File read failed: " + e);

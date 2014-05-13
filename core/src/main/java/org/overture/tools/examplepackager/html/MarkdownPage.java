@@ -20,7 +20,7 @@ public class MarkdownPage
 		// return "\n<h" + level + ">" + text + "</h" + level + ">\n";
 		if (level == 1)
 		{
-			return "#" + text + "\n";
+			return "# " + text + "\n";
 		} else
 		{
 			String temp = "";
@@ -28,7 +28,7 @@ public class MarkdownPage
 			{
 				temp += "#";
 			}
-			return temp + text + "\n";
+			return temp + " " + text + "\n";
 		}
 	}
 
