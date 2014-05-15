@@ -141,22 +141,6 @@ public class FileUtils
 			}
 			streamIn.close();
 
-			// if (sb.toString().contains("\n"))
-			// {
-
-			// 	String trimmed = "";
-			// 	for (String line : sb.toString().split("\n"))
-			// 	{
-			// 		if (line.trim().isEmpty())
-			// 		{
-			// 			trimmed += "\n";
-			// 		} else
-			// 		{
-			// 			trimmed += line;
-			// 		}
-			// 	}
-			// 	return trimmed;
-			// }
 		} catch (FileNotFoundException e)
 		{
 			System.err.println("File read failed: " + e);
