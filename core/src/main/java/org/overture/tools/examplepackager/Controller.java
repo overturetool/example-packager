@@ -295,13 +295,14 @@ public class Controller
 			// Markdown Page build
 			md.append(MarkdownPage.makeBr());
 			md.append(MarkdownPage.makeH(3, name));
+			md.append(p.getSettings().getContent().trim());
 
 			String rowsmarkdown = "";// MarkdownPage.makeRow("Project Name:", name);
-			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Author:"), p.getSettings().getTexAuthor());
-			rowsmarkdown += MarkdownPage.makeRow(MarkdownPage.makeBold("Version:"), p.getDialect().name()
+			rowsmarkdown += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());
+			rowsmarkdown += MarkdownPage.makeRow("Version:", p.getDialect().name()
 					+ " - " + p.getSettings().getLanguageVersion().toString());
-			String project_content = p.getSettings().getContent().replaceAll("\n", "");
-			rowsmarkdown += MarkdownPage.makeRow("", project_content);
+//			String project_content = p.getSettings().getContent().replaceAll("\n", "");
+//			rowsmarkdown += MarkdownPage.makeRow("", p.getSettings().getContent());
 
 			// html Page build
 			System.out.print(" table...");
@@ -318,14 +319,16 @@ public class Controller
 			p.zipTo(zipFile);
 
 			final String relativeProjectUrl = p.getSettings().getName() + "/";
-			rowsmarkdown += MarkdownPage.makeRow("", HtmlPage.makeLink("model (zip)", /* outputFolderName */
+			rowsmarkdown += MarkdownPage.makeRow("Details...",MarkdownPage.makeLink("model (zip)", /* outputFolderName */
 					relativeProjectUrl + zipFile.getName())
 					+ " "
 					+ pdfLink
 					+ " / "
-					+ HtmlPage.makeLink("show specification", relativeProjectUrl
+					+ MarkdownPage.makeLink("show specification", relativeProjectUrl
 							+ "index.html"));
 
+			md.append(MarkdownPage.makeBr());
+			md.append(MarkdownPage.makeBr());
 			md.append(MarkdownPage.makeTable(rowsmarkdown));
 			md.append(MarkdownPage.makeBr());
 			System.out.print("\n");
