@@ -1,10 +1,22 @@
 package org.overture.tools.examplepackager.util;
 
+import java.io.Serializable;
+
 import org.overture.tools.examplepackager.Dialect;
 import org.overture.tools.examplepackager.Release;
 
-public class ExampleTestData
+/**
+ * Simple class for storing the essential test data for a single overture example.<br>
+ * <br>
+ * The class holds the name and content (the VDM model encoded in a {@link String}) as well as {@link Release} and
+ * {@link Dialect} information of the example.
+ * 
+ * @author ldc
+ */
+public class ExampleTestData implements Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	String name;
 	Dialect dialect;
