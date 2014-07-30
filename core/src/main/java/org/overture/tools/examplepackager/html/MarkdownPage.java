@@ -75,7 +75,7 @@ public class MarkdownPage
 	public static String makeCodeBlock(String code)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("~~~vdm\n");
+		sb.append("~~~\n");
 		sb.append(code);
 		sb.append("\n~~~\n");
 		return sb.toString();
