@@ -89,10 +89,9 @@ public class FileUtils
 		Scanner s = new Scanner(input);
 		try
 		{
-
-			// latex \begin{cml}
-			// regex \\begin\{cml\}
-			// java \\\\begin\\{cml\\}
+			// latex input: \begin{cml}
+			// regex:       \\begin\{cml\}
+			// string enc:  \\\\begin\\{cml\\}
 			if (s.findWithinHorizon("\\\\begin\\{" + env + "\\}", 0) != null)
 			{
 				return true;
@@ -127,17 +126,19 @@ public class FileUtils
 		StringBuilder sb = new StringBuilder();
 		try
 		{
-			InputStream streamIn = chooseStream(file, "vdm_al",null);
-			streamIn = chooseStream(file, "vdmsl",streamIn);
-			streamIn = chooseStream(file, "vdmpp",streamIn);
-			streamIn = chooseStream(file, "vdmrt",streamIn);
-			//
-			// streamIn =new LatexCmlEnvInputStream(streamIn,"vdm_al");
+			InputStream streamIn = chooseStream(file, "vdm_al", null);
+			streamIn = chooseStream(file, "vdmsl", streamIn);
+			streamIn = chooseStream(file, "vdmpp", streamIn);
+			streamIn = chooseStream(file, "vdmrt", streamIn);
+			streamIn = chooseStream(file, "cml", streamIn);
 
-			int c;
-			while ((c = streamIn.read()) != -1)
+			BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn, "UTF-8"));
+
+			String line;
+			while (null != (line = reader.readLine()))
 			{
-				sb.append((char) c);
+				sb.append(line);
+				sb.append("\n");
 			}
 			streamIn.close();
 
@@ -150,26 +151,6 @@ public class FileUtils
 		}
 		return sb.toString();
 	}
-
-	// public static void writeFile(File outputFolder, String fileName, String content)
-	// throws IOException
-	// {
-	// FileWriter outputFileReader = new FileWriter(new File(outputFolder,
-	// fileName), false);
-	// BufferedWriter outputStream = new BufferedWriter(outputFileReader);
-	// outputStream.write(content);
-	// outputStream.close();
-	//
-	// }
-	//
-	// public static void writeFile(File file, String content) throws IOException
-	// {
-	// FileWriter outputFileWriter = new FileWriter(file);
-	// BufferedWriter outputStream = new BufferedWriter(outputFileWriter);
-	// outputStream.write(content);
-	// outputStream.close();
-	// outputFileWriter.close();
-	// }
 
 	public static void writeFile(String data, File file)
 	{

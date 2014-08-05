@@ -59,6 +59,13 @@ public class ExamplePackagerMojo extends AbstractMojo
 	protected List<File> exampleRTBaseDirectories;
 
 	/**
+	 * A list of directories containing subdirectories with example VDM-PP projects. Note that the name of the output
+	 * bundle will be derived from the name of the base directory.
+	 */
+	@Parameter(alias = "cmlExamples")
+	protected List<File> exampleCMLBaseDirectories;
+
+	/**
 	 * A prefix to the output zip filename.
 	 */
 	@Parameter(defaultValue = "Examples-")
@@ -88,12 +95,20 @@ public class ExamplePackagerMojo extends AbstractMojo
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
-		
-		PackerUtil packer = new PackerUtil(outputDirectory, outputZipFiles, outputWebFiles, outputMarkdownFiles, outputPrefix/*, markdownOutputDirectory*/, tmpdir, overtureCSSWeb);
-		
-		packer.pack(exampleSLBaseDirectories, Dialect.VDM_SL);
-		packer.pack(examplePPBaseDirectories, Dialect.VDM_PP);
-		packer.pack(exampleRTBaseDirectories, Dialect.VDM_RT);
+		PackerUtil packer = new PackerUtil(outputDirectory, outputZipFiles, outputWebFiles, outputMarkdownFiles, outputPrefix, tmpdir, overtureCSSWeb);
+
+		if (exampleSLBaseDirectories != null) {
+			packer.pack(exampleSLBaseDirectories, Dialect.VDM_SL);
+		}
+		if (examplePPBaseDirectories != null) {
+			packer.pack(examplePPBaseDirectories, Dialect.VDM_PP);
+		}
+		if (exampleRTBaseDirectories != null) {
+			packer.pack(exampleRTBaseDirectories, Dialect.VDM_RT);
+		}
+		if (exampleCMLBaseDirectories != null) {
+			packer.pack(exampleCMLBaseDirectories, Dialect.CML);
+		}
 
 		packer.createOverviewPages();
 	}

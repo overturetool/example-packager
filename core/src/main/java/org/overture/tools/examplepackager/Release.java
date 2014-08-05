@@ -25,7 +25,8 @@ package org.overture.tools.examplepackager;
 public enum Release
 {
 	CLASSIC("classic"), // VDM, before Overture changes
-	VDM_10("vdm10"); // VDM-10, with Overture changes
+	VDM_10("vdm10"), // VDM-10, with Overture changes
+	CML("cml"); // CML, for Symphony from the COMPASS project
 
 	public static final Release DEFAULT = CLASSIC;
 

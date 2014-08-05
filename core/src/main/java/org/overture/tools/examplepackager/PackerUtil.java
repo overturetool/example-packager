@@ -35,11 +35,6 @@ public class PackerUtil
 	 */
 	final File outputDirectory;
 
-	///**
-	// * Name of the directory into which the markdown web pages would be generated.
-	// */
-	//final File markdownOutputDirectory;
-
 	/**
 	 * Location of the staging directory for the example packager.
 	 */
@@ -49,21 +44,17 @@ public class PackerUtil
 
 	public PackerUtil(File outputDirectory, boolean outputZipFiles,
 			boolean outputWebFiles, boolean outputMarkdownFiles,
-			String outputPrefix/*, File markdownOutputDirectory*/, File tmpdir,
-			boolean overtureCSSWeb)
+			String outputPrefix, File tmpdir, boolean overtureCSSWeb)
 	{
 		this.outputDirectory = outputDirectory;
 		this.outputZipFiles = outputZipFiles;
 		this.outputWebFiles = outputWebFiles;
 		this.outputMarkdownFiles = outputMarkdownFiles;
 		this.outputPrefix = outputPrefix;
-		//this.markdownOutputDirectory = markdownOutputDirectory;
 		this.tmpdir = tmpdir;
 		this.overtureCSSWeb = overtureCSSWeb;
-		
-		
+
 		this.outputDirectory.mkdirs();
-		//.markdownOutputDirectory.mkdirs();
 		this.tmpdir.mkdirs();
 	}
 

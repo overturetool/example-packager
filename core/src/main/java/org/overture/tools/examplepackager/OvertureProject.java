@@ -20,10 +20,12 @@ package org.overture.tools.examplepackager;
 
 public interface OvertureProject
 {
-	public final String NATURE_SPACEHOLDER = "NATURE_ID";
+	public final String NATURE_PLACEHOLDER = "NATURE_ID";
 	public final String NAME_PLACEHOLDER = "NAME_ID";
 	public final String TEX_DOCUMENT = "DOCUMENT_VALUE";
+	public final String BUILDERS_PLACEHOLDER = "BUILDERS_PLACEHOLDER";
 	public final String ARGUMENTS_PLACEHOLDER = "ARGUMENTS_PLACEHOLDER";
+
 	public final String EclipseProject = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 			+ "<projectDescription>\n" + "	<name>"
 			+ NAME_PLACEHOLDER
@@ -32,12 +34,24 @@ public interface OvertureProject
 			+ "	<projects>\n"
 			+ "	</projects>\n"
 			+ "	<buildSpec>\n"
-			+ "		<buildCommand>\n"
+			+ BUILDERS_PLACEHOLDER
+			+ "	</buildSpec>\n"
+			+ "	<natures>\n"
+			+ "		<nature>"
+			+ NATURE_PLACEHOLDER
+			+ "</nature>\n" + "	</natures>\n" + "</projectDescription>";
+
+	public final String VDM_BUILDER = "		<buildCommand>\n"
 			+ "			<name>org.overture.ide.core.builder.VdmBuilder</name>\n"
 			+ "			<arguments>\nARGUMENTS_PLACEHOLDER\n"
 			+ "			</arguments>\n"
-			+ "		</buildCommand>\n"
-			+ "		<buildCommand>\n"
+			+ "		</buildCommand>\n";
+	public final String CML_BUILDER = "		<buildCommand>\n"
+			+ "			<name>org.overture.ide.core.builder.VdmBuilder</name>\n"
+			+ "			<arguments>\nARGUMENTS_PLACEHOLDER\n"
+			+ "			</arguments>\n"
+			+ "		</buildCommand>\n";
+	public final String LATEX_BUILDER = "		<buildCommand>\n"
 			+ "			<name>org.overture.ide.plugins.latex.builder</name>\n"
 			+ "			<arguments>\n"
 			+ "				<dictionary>\n"
@@ -45,15 +59,12 @@ public interface OvertureProject
 			+ "					<value>DOCUMENT_VALUE</value>\n"
 			+ "				</dictionary>\n"
 			+ "			</arguments>\n"
-			+ "		</buildCommand>\n"
-			+ "	</buildSpec>\n"
-			+ "	<natures>\n"
-			+ "		<nature>"
-			+ NATURE_SPACEHOLDER
-			+ "</nature>\n" + "	</natures>\n" + "</projectDescription>";
-
+			+ "		</buildCommand>\n";
+    
+    
 	public final String VDMPP_NATURE = "org.overture.ide.vdmpp.core.nature";
 	public final String VDMSL_NATURE = "org.overture.ide.vdmsl.core.nature";
 	public final String VDMRT_NATURE = "org.overture.ide.vdmrt.core.nature";
+	public final String CML_NATURE   = "eu.compassresearch.ide.core.cmlnature";
 
 }

@@ -217,13 +217,18 @@ public class VdmReadme
 	public String getEclipseProject()
 	{
 		StringBuilder sb = new StringBuilder();
+		String projectContent;
 
 		String projectNature = getNature();
 		String builderArguments = getBuilderArguments();
+		String builders = getBuilders().replace(OvertureProject.ARGUMENTS_PLACEHOLDER, builderArguments);
 
-		sb.append(OvertureProject.EclipseProject.replace(OvertureProject.NATURE_SPACEHOLDER, projectNature).replace(OvertureProject.NAME_PLACEHOLDER, name).replace(OvertureProject.ARGUMENTS_PLACEHOLDER, builderArguments).replace(OvertureProject.TEX_DOCUMENT, getTexDocument().trim()));
-		return sb.toString();
-
+		projectContent = OvertureProject.EclipseProject
+			.replace(OvertureProject.NATURE_PLACEHOLDER, projectNature)
+			.replace(OvertureProject.NAME_PLACEHOLDER, name)
+			.replace(OvertureProject.BUILDERS_PLACEHOLDER, builders)
+			.replace(OvertureProject.TEX_DOCUMENT, getTexDocument().trim());
+		return projectContent;
 	}
 
 	public String getEclipsePreferences()
@@ -250,6 +255,9 @@ public class VdmReadme
 				break;
 			case VDM_RT:
 				projectNature = OvertureProject.VDMRT_NATURE;
+				break;
+			case CML:
+				projectNature = OvertureProject.CML_NATURE;
 				break;
 			default:
 		}
@@ -280,6 +288,15 @@ public class VdmReadme
 			}
 		}
 		return sb.toString();
+	}
+
+	private String getBuilders()
+	{
+		if (languageVersion == Release.CML) {
+			return OvertureProject.CML_BUILDER;
+		} else {
+			return OvertureProject.VDM_BUILDER + OvertureProject.LATEX_BUILDER;
+		}
 	}
 
 	private String getBuilderArguments()

@@ -77,7 +77,7 @@ public class MarkdownPage
 		StringBuilder sb = new StringBuilder();
 		sb.append("~~~\n");
 		sb.append(code);
-		sb.append("\n~~~\n");
+		sb.append("~~~\n");
 		return sb.toString();
 	}
 

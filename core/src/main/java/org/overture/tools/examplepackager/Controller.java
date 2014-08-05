@@ -287,22 +287,21 @@ public class Controller
 		Collections.sort(projects);
 		for (ProjectPacker p : projects)
 		{
-
-			String name = p.getSettings().getName().substring(0, p.getSettings().getName().length() - 2);
+			String name = p.getSettings().getName();
+			int suffixLength = p.getName(p.getSettings().getDialect()).length();
+			name = name.substring(0, p.getSettings().getName().length() - suffixLength);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
-			System.out.println("Creating web entry for: " + name);
+			System.out.println("Creating markdown page for: " + name);
 
 			// Markdown Page build
 			md.append(MarkdownPage.makeBr());
 			md.append(MarkdownPage.makeH(3, name));
 			md.append(p.getSettings().getContent().trim());
 
-			String rowsmarkdown = "";// MarkdownPage.makeRow("Project Name:", name);
+			String rowsmarkdown = "";
 			rowsmarkdown += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());
 			rowsmarkdown += MarkdownPage.makeRow("Version:", p.getDialect().name()
 					+ " - " + p.getSettings().getLanguageVersion().toString());
-//			String project_content = p.getSettings().getContent().replaceAll("\n", "");
-//			rowsmarkdown += MarkdownPage.makeRow("", p.getSettings().getContent());
 
 			// html Page build
 			System.out.print(" table...");

@@ -162,7 +162,8 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 		{
 			if (f.isFile() && f.getName().toLowerCase().endsWith(".vdmpp")
 					|| f.getName().toLowerCase().endsWith(".vdmrt")
-					|| f.getName().toLowerCase().endsWith(".vdmsl"))
+					|| f.getName().toLowerCase().endsWith(".vdmsl")
+					|| f.getName().toLowerCase().endsWith(".cml"))
 			{
 				specFiles.add(f);
 			} else if (f.isDirectory())
@@ -183,6 +184,8 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 				return "RT";
 			case VDM_SL:
 				return "SL";
+			case CML:
+				return "";
 			default:
 				return "PP";
 		}
