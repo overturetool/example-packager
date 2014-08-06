@@ -300,8 +300,10 @@ public class Controller
 
 			String rowsmarkdown = "";
 			rowsmarkdown += MarkdownPage.makeRow("Author:", p.getSettings().getTexAuthor());
-			rowsmarkdown += MarkdownPage.makeRow("Version:", p.getDialect().name()
+			if (p.getSettings().getDialect() != Dialect.CML) {
+				rowsmarkdown += MarkdownPage.makeRow("Version:", p.getDialect().name()
 					+ " - " + p.getSettings().getLanguageVersion().toString());
+			}
 
 			// html Page build
 			System.out.print(" table...");
@@ -380,18 +382,23 @@ public class Controller
 
 			sumString.append(p.getSettings().getContent());
 
-			sumString.append("\n\n| Properties | Values          |\n| :------------ | :---------- |\n");
-			sumString.append("|Language Version:| "
+			/* Turn off all properties for now for CML
+			 * files, though we will eventually want to
+			 * list the entry points. -jwc/06Aug2014
+			 */
+			if (p.getSettings().getDialect() != Dialect.CML) {                        
+				sumString.append("\n\n| Properties | Values          |\n| :------------ | :---------- |\n");
+				sumString.append("|Language Version:| "
 					+ p.getSettings().getLanguageVersion() + "|\n");
-			if (p.getSettings().getEntryPoints().size() > 0)
-			{
-				for (String entrypoint : p.getSettings().getEntryPoints())
+				if (p.getSettings().getEntryPoints().size() > 0)
 				{
-					sumString.append("|Entry point     :| " + entrypoint+"|\n");
+					for (String entrypoint : p.getSettings().getEntryPoints())
+					{
+						sumString.append("|Entry point     :| " + entrypoint+"|\n");
+					}
 				}
 			}
 
-			
 			sumString.append(MarkdownPage.makeBr());
 
 			for (File specFile : p.getSpecFiles(p.getRoot()))
