@@ -20,7 +20,7 @@ package org.overture.tools.examplepackager.html;
 
 public class HtmlPage
 {
-	public final static String overtureExamplesPreLink = "http://overture.sourceforge.net/examples/";
+	public final static String overtureExamplesPreLink = "http://overturetool.org/documentation/examples/";
 
 	public static String makePage(String body)
 	{
