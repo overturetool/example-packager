@@ -12,7 +12,7 @@
 
   <groupId>org.overturetool.build</groupId>
   <artifactId>root</artifactId>
-  <version>2.1.2-SNAPSHOT</version>
+  <version>2.1.2</version>
   <name>Overture Example Packager superpom</name>
   <description>A maven plugin to bundle up the VDM examples in the Overture Project's main repository</description>
   <url>http://overturetool.org/example-packager/</url>
@@ -222,7 +222,7 @@
     <url>git@github.com/overturetool/example-packager.git</url>
     <connection>scm:git:https://github.com/overturetool/example-packager.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/overturetool/example-packager.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>v2.1.2</tag>
   </scm>
 
   <developers>
