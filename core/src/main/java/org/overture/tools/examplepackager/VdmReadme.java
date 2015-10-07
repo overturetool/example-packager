@@ -130,7 +130,7 @@ public class VdmReadme
 			settingsParsed = true;
 			if (data[0].equals(LANGUAGE_VERSION))
 			{
-				setLanguageVersion(Release.lookup(data[1]));
+				setLanguageVersion(Release.lookup(data[1].toLowerCase()));
 			} else if (data[0].equals(INV_CHECKS))
 			{
 				setInvChecks(new Boolean(data[1]));
@@ -216,7 +216,6 @@ public class VdmReadme
 
 	public String getEclipseProject()
 	{
-		StringBuilder sb = new StringBuilder();
 		String projectContent;
 
 		String projectNature = getNature();
