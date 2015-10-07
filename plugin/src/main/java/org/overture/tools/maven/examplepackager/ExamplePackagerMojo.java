@@ -59,6 +59,12 @@ public class ExamplePackagerMojo extends AbstractMojo
 	protected List<File> exampleRTBaseDirectories;
 
 	/**
+	 * Directory containing subdirectories with the VDM libraries.
+	 */
+	@Parameter(alias = "vdmLibs")
+	protected File vdmLibsBaseDirectory;
+
+	/**
 	 * A list of directories containing subdirectories with example VDM-PP projects. Note that the name of the output
 	 * bundle will be derived from the name of the base directory.
 	 */
@@ -98,16 +104,16 @@ public class ExamplePackagerMojo extends AbstractMojo
 		PackerUtil packer = new PackerUtil(outputDirectory, outputZipFiles, outputWebFiles, outputMarkdownFiles, outputPrefix, tmpdir, overtureCSSWeb);
 
 		if (exampleSLBaseDirectories != null) {
-			packer.pack(exampleSLBaseDirectories, Dialect.VDM_SL);
+			packer.pack(exampleSLBaseDirectories, Dialect.VDM_SL,vdmLibsBaseDirectory);
 		}
 		if (examplePPBaseDirectories != null) {
-			packer.pack(examplePPBaseDirectories, Dialect.VDM_PP);
+			packer.pack(examplePPBaseDirectories, Dialect.VDM_PP,vdmLibsBaseDirectory);
 		}
 		if (exampleRTBaseDirectories != null) {
-			packer.pack(exampleRTBaseDirectories, Dialect.VDM_RT);
+			packer.pack(exampleRTBaseDirectories, Dialect.VDM_RT,vdmLibsBaseDirectory);
 		}
 		if (exampleCMLBaseDirectories != null) {
-			packer.pack(exampleCMLBaseDirectories, Dialect.CML);
+			packer.pack(exampleCMLBaseDirectories, Dialect.CML,vdmLibsBaseDirectory);
 		}
 
 		packer.createOverviewPages();
