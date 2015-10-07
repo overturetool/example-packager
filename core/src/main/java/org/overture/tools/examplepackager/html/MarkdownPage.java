@@ -1,8 +1,5 @@
 package org.overture.tools.examplepackager.html;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class MarkdownPage
 {
