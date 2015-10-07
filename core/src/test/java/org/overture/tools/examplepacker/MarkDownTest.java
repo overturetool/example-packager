@@ -15,8 +15,8 @@ public class MarkDownTest
 	public void createMarkdown()
 	{
 		PackerUtil packer = new PackerUtil( F("target/generated/markdown/"), true, false, true, "", F("target/generated-resources/example-packager"), false);
-
-		packer.pack(L("src/test/resources/examples/VDMSL"), Dialect.VDM_SL);
+		
+		packer.pack(L("src/test/resources/examples/VDMSL"), Dialect.VDM_SL,F("src/test/resources/libs"));
 		packer.createOverviewPages();
 	}
 
