@@ -25,25 +25,28 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Vector;
 
-import org.overture.tools.examplepackager.util.FileUtils;
 import org.overture.tools.examplepackager.util.FolderZipper;
 
 public class ProjectPacker implements Comparable<ProjectPacker>
 {
 	public static final String VDM_README_FILENAME = "README.txt";
 	File root;
+	File libsLocation;
 	VdmReadme settings = null;
 	Dialect dialect = Dialect.VDM_PP;
 	File newLocation;
 	boolean verbose = true;
 
-	public ProjectPacker(File root, Dialect dialect, boolean verbose)
+	public ProjectPacker(File root, Dialect dialect, boolean verbose,
+			File libsLocation)
 	{
 		this(root, dialect);
 		this.verbose = verbose;
+		this.libsLocation = libsLocation;
 	}
 
 	public ProjectPacker(File root, Dialect dialect)
@@ -97,9 +100,9 @@ public class ProjectPacker implements Comparable<ProjectPacker>
 			{
 				try
 				{
-					FileUtils.writeFile(FileUtils.readFile("/libs/"
-							+ getName(getDialect()) + "/" + lib), new File(libDir, "/"
-							+ lib));
+					Files.copy(new File(libsLocation.getPath() + "/"
+							+ getName(getDialect()) + "/" + lib).toPath(), new File(libDir, "/"
+							+ lib).toPath());
 				} catch (IOException e)
 				{
 					// TODO Auto-generated catch block
