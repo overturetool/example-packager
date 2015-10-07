@@ -40,6 +40,7 @@ public class Main
 	static boolean web = false;
 	static boolean overtureCSSWeb = false;
 	static boolean markdown = false;
+	static File lib;
 
 	/**
 	 * @param args
@@ -62,7 +63,10 @@ public class Main
 		Option genWebOpt = new Option("w", "web", false, "generate website");
 		Option overtureCssWebOpt = new Option("c", "overture-css", false, "style website with overture style");
 		Option genZipbundleOpt = new Option("z", "zip", false, "generate zip bundles");
-
+		
+		Option libOpt = new Option("l", "library", true, "the path of the libraries folder" );
+		libOpt.setRequired(true);
+		
 		Option inputOpt = new Option("i", "input", true, "the path of the examples folder");
 		inputOpt.setRequired(true);
 		Option outputOpt = new Option("o", "output", true, "the path to where output files are written");
@@ -77,6 +81,7 @@ public class Main
 		options.addOption(inputOpt);
 		options.addOption(outputOpt);
 		options.addOption(markdownOutput);
+		options.addOption(libOpt);
 
 		CommandLine line = null;
 		try
@@ -110,17 +115,19 @@ public class Main
 		{
 			markdownfolder = new File(line.getOptionValue(markdownOutput.getOpt()));
 		}
+		
+		lib = new File(line.getOptionValue(libOpt.getOpt()));
 
 		web = line.hasOption(genWebOpt.getOpt());
 		overtureCSSWeb = line.hasOption(overtureCssWebOpt.getOpt());
 		zip = line.hasOption(genZipbundleOpt.getOpt());
 
-		runCompleteTest(input);
+		runCompleteTest(input, lib);
 		return;
 	}
 
 	private static Controller runController(Dialect dialect,
-			File inputRootFolder, File tmpFolder) throws IOException
+			File inputRootFolder, File tmpFolder, File libsLocation) throws IOException
 	{
 		Controller controller = new Controller(dialect, inputRootFolder, output, markdownfolder);
 
@@ -130,13 +137,13 @@ public class Main
 
 			File zipFile = new File(output, "Examples"
 					+ dialect.toString().toUpperCase() + ".zip");
-			controller.packExamples(tmpFolder, zipFile, false);
+			controller.packExamples(tmpFolder, zipFile, false, libsLocation);
 
 			zipFiles.add(zipFile);
 		}
 		if (web || markdown)
 		{
-			controller.packExamples(tmpFolder, null, true);
+			controller.packExamples(tmpFolder, null, true,libsLocation);
 			controller.createWebSite(overtureCSSWeb);
 		}
 		return controller;
@@ -144,7 +151,7 @@ public class Main
 
 	static List<File> zipFiles = new Vector<File>();
 
-	public static void runCompleteTest(File root) throws Exception
+	public static void runCompleteTest(File root, File libsFolder) throws Exception
 	{
 		if (!root.getName().toLowerCase().equals("examples"))
 		{
@@ -155,15 +162,15 @@ public class Main
 
 		List<Controller> controllers = new Vector<Controller>();
 
-		Controller controller = runController(Dialect.VDM_SL, new File(root, "VDMSL"), tmpFolder);
+		Controller controller = runController(Dialect.VDM_SL, new File(root, "VDMSL"), tmpFolder, libsFolder);
 		controllers.add(controller);
 		Controller.delete(tmpFolder);
 
-		controller = runController(Dialect.VDM_PP, new File(root, "VDM++"), tmpFolder);
+		controller = runController(Dialect.VDM_PP, new File(root, "VDM++"), tmpFolder, libsFolder);
 		controllers.add(controller);
 		Controller.delete(tmpFolder);
 
-		controller = runController(Dialect.VDM_RT, new File(root, "VDMRT"), tmpFolder);
+		controller = runController(Dialect.VDM_RT, new File(root, "VDMRT"), tmpFolder, libsFolder);
 		controllers.add(controller);
 
 		if (web)
