@@ -85,7 +85,7 @@ public class Controller_fault
 		System.out.println("|                                                                              |");
 	}
 
-	public void packExamples(File outputFolder, File zipName, boolean dryrun)
+	public void packExamples(File outputFolder, File zipName, boolean dryrun, File libsLocation)
 	{
 		if (!dryrun)
 		{
@@ -104,7 +104,7 @@ public class Controller_fault
 				continue;
 			}
 
-			ProjectPacker p = new ProjectPacker(exampleFolder, dialect, verbose);
+			ProjectPacker p = new ProjectPacker(exampleFolder, dialect, verbose, libsLocation);
 			if (!dryrun)
 			{
 				p.packTo(outputFolder);

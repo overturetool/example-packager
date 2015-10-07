@@ -96,7 +96,7 @@ public class Controller
 		System.out.println("|                                                                              |");
 	}
 
-	public void packExamples(File outputFolder, File zipName, boolean dryrun)
+	public void packExamples(File outputFolder, File zipName, boolean dryrun, File libsLocation)
 	{
 		if (!dryrun)
 		{
@@ -115,7 +115,7 @@ public class Controller
 				continue;
 			}
 
-			ProjectPacker p = new ProjectPacker(exampleFolder, dialect, verbose);
+			ProjectPacker p = new ProjectPacker(exampleFolder, dialect, verbose, libsLocation);
 			if (!dryrun)
 			{
 				p.packTo(outputFolder);
@@ -288,7 +288,7 @@ public class Controller
 		for (ProjectPacker p : projects)
 		{
 			String name = p.getSettings().getName();
-			int suffixLength = p.getName(p.getSettings().getDialect()).length();
+			int suffixLength = ProjectPacker.getName(p.getSettings().getDialect()).length();
 			name = name.substring(0, p.getSettings().getName().length() - suffixLength);
 			name = name.substring(0, 1).toUpperCase() + name.substring(1);
 			System.out.println("Creating markdown page for: " + name);

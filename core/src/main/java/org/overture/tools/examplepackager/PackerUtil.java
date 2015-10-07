@@ -8,7 +8,7 @@ public class PackerUtil
 {
 	protected final List<Controller> controllers = new Vector<Controller>();
 	protected final List<File> zipFiles = new Vector<File>();
-
+	
 	/**
 	 * A boolean indicating whether example zips should be generated
 	 */
@@ -58,7 +58,7 @@ public class PackerUtil
 		this.tmpdir.mkdirs();
 	}
 
-	public void pack(List<File> exampleBaseDirectories, Dialect dialect)
+	public void pack(List<File> exampleBaseDirectories, Dialect dialect, File libFolder)
 	{
 		File zipFile;
 		Controller controller;
@@ -70,7 +70,7 @@ public class PackerUtil
 			zipFiles.add(zipFile);
 			controller = new Controller(dialect, exampleDir, outputDirectory, false);
 			controllers.add(controller);
-			controller.packExamples(new File(tmpdir, exampleDir.getName()), zipFile, !outputZipFiles);
+			controller.packExamples(new File(tmpdir, exampleDir.getName()), zipFile, !outputZipFiles, libFolder);
 
 			if (outputWebFiles)
 			{
