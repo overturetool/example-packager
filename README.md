@@ -23,6 +23,7 @@ This packages up VDM examples from the main Overture repository for distribution
     <rtExamples>
       <param>${project.basedir}/VDMRT</param>
     </rtExamples>
+    <vdmLibs>${project.basedir}/libs</vdmLibs>
   </configuration>
   <executions>
     <execution>
