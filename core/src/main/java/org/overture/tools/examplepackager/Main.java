@@ -44,7 +44,6 @@ public class Main
 
 	/**
 	 * @param args
-	 * @return
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception

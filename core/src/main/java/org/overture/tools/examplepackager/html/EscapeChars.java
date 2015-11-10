@@ -33,18 +33,18 @@ import java.util.regex.Pattern;
  * <em>directly</em> use the services of this class very often.
  * <P>
  * <span class='highlight'>For Model Objects containing free form user input, it is highly recommended that you use
- * {@link SafeText}, not <tt>String</tt></span>. Free form user input is open to malicious use, such as <a
+ * <code>SafeText</code>, not <tt>String</tt></span>. Free form user input is open to malicious use, such as <a
  * href='http://www.owasp.org/index.php/Cross_Site_Scripting'>Cross Site Scripting</a> attacks. Using <tt>SafeText</tt>
  * will protect you from such attacks, by always escaping special characters automatically in its <tt>toString()</tt>
  * method.
  * <P>
  * The following WEB4J classes will automatically escape special characters for you, when needed :
  * <ul>
- * <li>the {@link SafeText} class, used as a building block class for your application's Model Objects, for modeling all
+ * <li>the <code>SafeText</code> class, used as a building block class for your application's Model Objects, for modeling all
  * free form user input
- * <li>the {@link Populate} tag used with forms
- * <li>the {@link Report} class used for creating quick reports
- * <li>the {@link Text}, {@link TextFlow}, and {@link Tooltips} custom tags used for translation
+ * <li>the <code>Populate</code> tag used with forms
+ * <li>the <code>Report</code> class used for creating quick reports
+ * <li>the <code>Text<code>, TextFlow</code>, and <code>Tooltips</code> custom tags used for translation
  * </ul>
  */
 public final class EscapeChars
@@ -55,7 +55,7 @@ public final class EscapeChars
 	 * <P>
 	 * This method exists as a defence against Cross Site Scripting (XSS) hacks. The idea is to neutralize control
 	 * characters commonly used by scripts, such that they will not be executed by the browser. This is done by
-	 * replacing the control characters with their escaped equivalents. See {@link hirondelle.web4j.security.SafeText}
+	 * replacing the control characters with their escaped equivalents. See <code>SafeText</code>
 	 * as well.
 	 * <P>
 	 * The following characters are replaced with corresponding HTML character entities :

@@ -72,7 +72,7 @@ public class LatexCmlEnvInputStream extends InputStream
 	 * Checks if the reader is in skipping mode. The method changed the internal next skipping mode based on the current
 	 * read value and returns the current skipping mode
 	 * 
-	 * @return
+	 * @return true if the reader is in skipping mode. false otherwise.
 	 */
 	private boolean isSkipping()
 	{
@@ -93,7 +93,7 @@ public class LatexCmlEnvInputStream extends InputStream
 	 * 
 	 * @param buf
 	 * @param string
-	 * @return
+	 * @return true if the buffer ends in the given string. False otherwise.
 	 */
 	boolean contains(@SuppressWarnings("rawtypes") Queue buf, String string)
 	{
